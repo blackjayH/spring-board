@@ -9,6 +9,6 @@
 </head>
 <body>
 <%@ include file="user/user_list_menu.jsp" %>
-	
+	<h2>게시판 연습 </h2>
 </body>
 </html>

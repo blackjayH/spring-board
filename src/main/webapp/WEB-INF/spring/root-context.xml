@@ -29,16 +29,19 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations"
 			value="classpath:mappers/**/*Mapper.xml" />
+			
 	</bean>
 	
-	<context:component-scan base-package="com.spring.website.model">
+	<context:component-scan base-package="com.spring">
 	
 	</context:component-scan>
 	
 	<bean id="sqlSession"
 		class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
-		<constructor-arg ref="sqlSessionFactory" name="sqlSessionFactory"></constructor-arg>
+		<constructor-arg ref="sqlSessionFactory" name="sqlSessionFactory"/>
 	</bean>
+	
+	
 
 
 

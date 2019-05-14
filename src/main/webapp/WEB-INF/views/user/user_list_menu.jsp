@@ -5,7 +5,7 @@
 <!-- context 경로 -->
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <div style="text-align: center;">
-	<a href="${path}/member/list.do">유저확인</a>
-	<a href="${path}/member/list.do">로그인</a>
+	<a href="${path}/user/user_list">유저확인</a>
+	<a href="${path}/user/join">로그인</a>
 </div>
 <hr>

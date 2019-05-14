@@ -147,8 +147,6 @@
 			<artifactId>spring-test</artifactId>
 			<version>5.1.6.RELEASE</version>
 		</dependency>
-
-
 		<!-- Apache Commons-DBCP -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

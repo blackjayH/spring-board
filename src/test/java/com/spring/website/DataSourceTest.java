@@ -40,9 +40,9 @@ public class DataSourceTest {
 		//uservo.setId("xxxax");
 		//uservo.setPw("xxxx");
 		//dao.insertUser(uservo);
-		List<UserVO> list = dao.listAll();
-		UserVO temp = list.get(0);
-		System.out.println(temp.getId());
+		boolean tmp = dao.checkId("aa");
+		if (tmp)
+			System.out.println("응");
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.service.UserService;
 import com.spring.vo.UserVO;
@@ -38,13 +39,32 @@ public class UserController {
 	// 회원가입 확인
 	@RequestMapping("/user/user_add")
 	public String userAdd(@ModelAttribute UserVO uservo, Model model) {
-		// 비밀번호 체크
+		userservice.insertUser(uservo);
+		return "redirect:user_list";
+	}
+
+	// 아이디 중복 확인
+	@RequestMapping("/user/user_checkId") // , method = RequestMethod.GET)
+	@ResponseBody
+	public String checkId(String id) {
+		boolean temp = userservice.checkId(id);
+		String x;
+		if (temp)
+			x = "no";
+		else
+			x = "yes";
+		return x;
+	}
+
+	@RequestMapping("/user/user_check")
+	public String useCheck(@ModelAttribute UserVO uservo, Model model) {
+		//
 		boolean result = userservice.checkId(uservo.getId());
 		if (result) { // 회원가입 실패(mysql에 id가 존재하는 경우)
-			model.addAttribute("message", "아이디 중복");
+			model.addAttribute("message", "아이디 중복O");
 			return "redirect:user_join";
 		} else { // 회원가입 성공
-			userservice.insertUser(uservo);
+			model.addAttribute("message", "아이디 중복X");
 			return "redirect:user_list";
 		}
 	}
@@ -67,7 +87,7 @@ public class UserController {
 	@RequestMapping("/user/user_update")
 	public String userUpdate(@ModelAttribute UserVO uservo, Model model) {
 		boolean result = userservice.checkPw(uservo.getId(), uservo.getPw());
-		if (result) { // 수정 성공		
+		if (result) { // 수정 성공
 			return "redirect:user_list";
 		} else { // 수정 실패
 			model.addAttribute("message", "수정 실패");

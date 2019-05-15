@@ -85,6 +85,7 @@ public class UserDAOImpl implements UserDAO {
 		int count = sqlSession.selectOne(namespace + ".checkId", map);
 		if (count == 1)
 			result = true;
+		//System.out.println(count);
 		return result;
 	}
 }

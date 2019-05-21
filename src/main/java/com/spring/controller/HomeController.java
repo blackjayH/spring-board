@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Handles requests for the application home page.
@@ -36,8 +37,17 @@ public class HomeController {
 	}
 
 	@RequestMapping("/")
-	public String index() {
-		return "index";
+	public String main() {
+		return "board/board_home";
+	}
+
+	@RequestMapping(value = "/interceptor")
+	public ModelAndView interceptorTest() throws Exception {
+		
+		ModelAndView mv = new ModelAndView("");
+		logger.info("인터셉터 테스트입니다!");
+
+		return mv;
 	}
 
 }

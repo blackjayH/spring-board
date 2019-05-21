@@ -60,7 +60,6 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public void deleteUser(UserVO uservo) {
 		sqlSession.delete(namespace + ".deleteUser", uservo);
-
 	}
 
 	// 06. 회원 정보 수정 및 삭제를 위한 비밀번호 체크
@@ -73,6 +72,7 @@ public class UserDAOImpl implements UserDAO {
 		int count = sqlSession.selectOne(namespace + ".checkPw", map);
 		if (count == 1)
 			result = true;
+		System.out.print(count);
 		return result;
 	}
 

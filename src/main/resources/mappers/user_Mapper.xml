@@ -35,7 +35,7 @@
 	</delete>
 	
 	<!-- 06. 비밀번호 체크 -->
-	<select id="checkPw" resultType="int">
+	<select id="checkPw" parameterType="com.spring.vo.UserVO" resultType="int">
 		SELECT 
 			COUNT(*) 
 		FROM user

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -72,7 +73,6 @@ public class UserDAOImpl implements UserDAO {
 		int count = sqlSession.selectOne(namespace + ".checkPw", map);
 		if (count == 1)
 			result = true;
-		System.out.print(count);
 		return result;
 	}
 
@@ -85,7 +85,8 @@ public class UserDAOImpl implements UserDAO {
 		int count = sqlSession.selectOne(namespace + ".checkId", map);
 		if (count == 1)
 			result = true;
-		//System.out.println(count);
 		return result;
 	}
+	
+	
 }

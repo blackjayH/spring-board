@@ -6,46 +6,50 @@
 	<select id="getTime" resultType="string">
 		select now()
 	</select>
-	<!-- 01. 전체 회원 목록 조회 -->
+	<!-- 01. 전체 게시판 게시글 목록 조회 -->
 	<select id="listAll" resultType="com.spring.vo.BoardVO">
-		<!--  SELECT * FROM BBS WHERE bbsID < ? AND bbsAvailable = 1 ORDER BY bbsID DESC LIMIT 10-->
-		select now()
+		SELECT bbsID, bbsTitle, userID,
+		bbsDate, bbsContent, bbsAvailable FROM BBS WHERE bbsAvailable = 1
+		ORDER BY bbsID
 	</select>
-	
-	<!-- 02. 회원 등록 -->
+
+	<!-- 02. 게시판 게시글 등록 -->
 	<insert id="insertBoard" parameterType="com.spring.vo.BoardVO">
-		insert into bbs(bbsID, bbsTitle, userID, bbsDate, bbsContent, bbsAvailable)
-		values (#{getNext()}+1, #{bbsTitle}, #{userID}, #{getTime()}, #{bbsContent}, 1)
+		insert into bbs(bbsID,
+		bbsTitle, userID, bbsDate, bbsContent, bbsAvailable)
+		values
+		(#{bbsID},
+		#{bbsTitle}, #{userID}, #{bbsDate}, #{bbsContent},#{bbsAvailable}
+		)
 	</insert>
-	
-	<!-- 03. 회원 정보 상세 조회 -->
+
+	<!-- 03. 게시판 게시글 상세 조회 -->
 	<select id="viewBoard" resultType="com.spring.vo.BoardVO">
-		select * from user where id = #{id}
+		select * from bbs where bbsID
+		=
+		#{bbsID}
 	</select>
-	
-	<!-- 04. 회원 정보 수정 처리 -->
+
+	<!-- 04. 게시판 게시글 수정 처리 -->
 	<update id="updateBoard" parameterType="com.spring.vo.BoardVO">
-		update user set id=#{id},
-		pw=#{pw} where id= #{id}
+		update bbs set
+		bbsTitle=#{bbsTitle},
+		bbsContent=#{bbsContent} where bbsID= #{bbsID}
 	</update>
-	
-	<!-- 05. 회원 정보 삭제 처리 -->
-	<delete id="deleteBoard" parameterType="com.spring.vo.BoardVO">
-		delete from user 
-		where id= #{id}
-	</delete>
-	
-	<!-- 06. 비밀번호 체크 -->
-	<select id="getNext" parameterType="com.spring.vo.BoardVO" resultType="int">
-		SELECT bbsID FROM BBS ORDER BY bbsID DESC
+
+	<!-- 05. 게시판 게시글 삭제 처리 -->
+	<update id="deleteBoard" parameterType="com.spring.vo.BoardVO">
+		update bbs set
+		bbsAvailable = 0 where bbsID= #{bbsID}
+	</update>
+
+	<!-- 06. 게시판 게시글 갯수 처리 -->
+	<select id="getNext" resultType="int">
+		SELECT COUNT(*) FROM bbs
 	</select>
 	
-	<!-- 07. 아이디 중복 체크 -->
-	<select id="checkId" resultType="int">
-		SELECT 
-			COUNT(*) 
-		FROM user
-		WHERE id = #{id}
+	<!-- 07. 게시판 유저 체크 -->
+	<select id="checkUser" resultType="String">
+		SELECT userID FROM bbs where bbsID= #{bbsID} 
 	</select>
-	
 </mapper>

@@ -18,7 +18,7 @@ public class SpringInterceptor extends HandlerInterceptorAdapter {
 
 		HttpSession session = request.getSession();
 
-		if (session.getAttribute("userId") == null) {
+		if (session.getAttribute("userID") == null) {
 			response.sendRedirect(request.getContextPath() + "/board/login");
 			return false;
 		} else

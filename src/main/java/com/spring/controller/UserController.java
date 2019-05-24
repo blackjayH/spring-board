@@ -3,6 +3,7 @@ package com.spring.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,30 +64,18 @@ public class UserController {
 		return str;
 	}
 
-	/*
-	@RequestMapping("/board/board_login")
-	@ResponseBody
-	public String userGoLogin(@ModelAttribute UserVO uservo) {
-		boolean tf = userservice.checkId(uservo.getId());
-		boolean tf2 = userservice.checkPw(uservo.getId(), uservo.getPw());
-		String str;
-		if (tf) {
-			if (tf2)
-				str = "yes";
-			else
-				str = "pwno";
-		} else {
-			str = "idno";
-		}
-		return str;
-	}
-	 
-	 */
-
-	// 로그인 전 ID / PW 체크
+	// 로그인 전 ID / PW 체크 / 결과 >> 로그인
 	@RequestMapping("/user/user_checkIdPw")
 	@ResponseBody
-	public String userCheckIdPw(@ModelAttribute UserVO uservo) {
+	public String userCheckIdPw(@ModelAttribute UserVO uservo, HttpSession session) {
+		String str = userservice.loginUser(uservo, session);
+		return str;
+	}
+
+	/*
+@RequestMapping("/user/user_checkIdPw")
+	@ResponseBody
+	public String userCheckIdPw(@ModelAttribute UserVO uservo, HttpSession session) {
 		boolean tf = userservice.checkId(uservo.getId());
 		boolean tf2 = userservice.checkPw(uservo.getId(), uservo.getPw());
 		String str;
@@ -98,7 +87,18 @@ public class UserController {
 		} else {
 			str = "idno";
 		}
+		if (str.equals("yes"))
+			session.setAttribute("userID", uservo.getId());
 		return str;
+	}
+	 */
+	
+	
+	// 로그 아웃
+	@RequestMapping("/user/user_logout")
+	public String userLogout(HttpSession session) {
+		userservice.logoutUser(session);
+		return "board/board_home";
 	}
 
 	// 미사용
@@ -142,7 +142,7 @@ public class UserController {
 
 	}
 
-	// 상세정보 확인
+	// 상세정보 확인(미사용)
 	@RequestMapping("/user/user_detail")
 	public String memberView(@RequestParam String id, Model model) {
 		// 회원 정보를 model에 저장

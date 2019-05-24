@@ -27,7 +27,7 @@
 
 	</beans:bean>
 
-	<context:component-scan base-package="com" />
+	<context:component-scan base-package="com.spring" />
 
 <!-- 
 interceptor session 로그인 여부 확인 
@@ -46,7 +46,8 @@ interceptor session 로그인 여부 확인
 		class="com.spring.interceptor.SpringInterceptor" />
 	<interceptors>
 		<interceptor>
-			<mapping path="/" />
+			<mapping path="/board/write" />
+			<mapping path="/board/edit" />
 			<beans:ref bean="springInterceptor" />
 
 

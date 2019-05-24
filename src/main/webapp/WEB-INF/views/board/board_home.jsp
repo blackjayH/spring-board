@@ -18,7 +18,9 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Spring Framework 게시판 만들기</title>
+
 </head>
+
 <body>
 	<nav class="navbar navbar-default">
 	<div class="naver-header">
@@ -28,7 +30,8 @@
 			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 				class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="${path}/board/home">Spring Framework 게시판 만들기</a>
+		<a class="navbar-brand" href="${path}/board/home">Spring Framework
+			게시판 만들기</a>
 	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
@@ -36,7 +39,12 @@
 			<li><a href="${path}/board/main">게시판</a>
 			<li><a href="${path}/board/join">회원가입</a>
 		</ul>
-		<%@ include file="board_menu_login.jsp"%>
+		<c:if test="${userID eq null}">
+			<%@ include file="board_menu_logout.jsp"%>
+		</c:if>
+		<c:if test="${userID ne null}">
+			<%@ include file="board_menu_login.jsp"%>
+		</c:if>
 	</div>
 	</nav>
 

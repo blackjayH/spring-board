@@ -37,13 +37,18 @@
 			<li class="active"><a href="${path}/board/main">게시판</a></li>
 			<li><a href="${path}/board/join">회원가입</a>
 		</ul>
-		<%@ include file="board_menu_login.jsp"%>
+		<c:if test="${userID eq null}">
+			<%@ include file="board_menu_logout.jsp"%>
+		</c:if>
+		<c:if test="${userID ne null}">
+			<%@ include file="board_menu_login.jsp"%>
+		</c:if>
 	</div>
 	</nav>
 
 	<div class="container">
 		<div class="row">
-			<form method="post" action="writeAction.jsp">
+			<form method="post" action="${path}/board/board_add">
 				<table class="table table-striped"
 					style="text-align: center; border: 1px;">
 					<thead>
@@ -65,7 +70,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<input type="submit" class="btn btn-primary pull-right" value="글쓰기">
+				<input type="submit" class="btn btn-primary pull-right" value="저장">
 			</form>
 		</div>
 	</div>

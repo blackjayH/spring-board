@@ -3,6 +3,7 @@ package com.spring.service;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
@@ -44,15 +45,38 @@ public class UserServiceImpl implements UserService {
 		userdao.deleteUser(uservo);
 	}
 
-	// 06. 회원 정보 수정 및 삭제를 위한 비밀번호 체크
+	// 06. 로그인시 비밀번호 확인
 	@Override
 	public boolean checkPw(String id, String pw) {
 		return userdao.checkPw(id, pw);
 	}
 
-	// 07. 아이디 중복 체크
+	// 07. 회원가입 및 로그인시 아이디 중복 체크
 	@Override
 	public boolean checkId(String id) {
 		return userdao.checkId(id);
+	}
+
+	// 08. 유저 로그인
+	public String loginUser(UserVO uservo, HttpSession session) {
+		boolean tf = userdao.checkId(uservo.getId());
+		boolean tf2 = userdao.checkPw(uservo.getId(), uservo.getPw());
+		String str;
+		if (tf) {
+			if (tf2)
+				str = "yes";
+			else
+				str = "pwno";
+		} else {
+			str = "idno";
+		}
+		if (str.equals("yes"))
+			session.setAttribute("userID", uservo.getId());
+		return str;
+	}
+
+	// 09. 유저 로그아웃
+	public void logoutUser(HttpSession session) {
+		session.invalidate();
 	}
 }

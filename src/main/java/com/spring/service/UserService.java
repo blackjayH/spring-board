@@ -2,6 +2,8 @@ package com.spring.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.spring.vo.UserVO;
 
 public interface UserService {
@@ -25,5 +27,11 @@ public interface UserService {
 	
 	// 07. 아이디 중복 체크
 	public boolean checkId(String id);
+	
+	// 08. 유저 로그인
+	public String loginUser(UserVO uservo, HttpSession session);
 
+	// 09. 유저 로그아웃
+	public void logoutUser(HttpSession session);
+	
 }

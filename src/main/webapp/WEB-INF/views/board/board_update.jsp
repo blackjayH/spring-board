@@ -36,7 +36,12 @@
 			<li class="active"><a href="${path}/board/main">게시판</a></li>
 			<li><a href="${path}/board/join">회원가입</a>
 		</ul>
-		<%@ include file="board_menu_login.jsp"%>
+		<c:if test="${userID eq null}">
+			<%@ include file="board_menu_logout.jsp"%>
+		</c:if>
+		<c:if test="${userID ne null}">
+			<%@ include file="board_menu_login.jsp"%>
+		</c:if>
 	</div>
 	</nav>
 	<div class="container">

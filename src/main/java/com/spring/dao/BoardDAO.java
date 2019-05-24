@@ -14,21 +14,17 @@ public interface BoardDAO {
 	public void insertBoard(BoardVO boardvo);
 
 	// 03. 회원 게시글 상세 조회
-	public BoardVO viewBoard(String bbsTitle);
+	public BoardVO viewBoard(int bbsID);
 
 	// 04. 회원 게시글 수정 처리
 	public void updateBoard(BoardVO boardvo);
 
 	// 05. 회원 게시글 삭제 처리
-	public void deleteBoard(BoardVO boardvo);
+	public void deleteBoard(int bbsID);
 
 	// 06. 회원 게시글 개수 조회
 	public int getNext();
 		
-	
-	// 06. 회원 정보 수정 및 삭제를 위한 비밀번호 체크
-	//public boolean checkPw(String id, String pw);
-
-	// 07. 아이디 중복 체크
-	//public boolean checkId(String id);
+	// 07. 회원 게시글 본인 여부 확인
+	public String checkUser(int bbsID);
 }

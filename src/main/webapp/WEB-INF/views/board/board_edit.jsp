@@ -17,20 +17,27 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 <title>Spring Framework 게시판 만들기</title>
-<style>
-a, a:hover {
-	color: #000000;
-	text-decoration: none;
-}
-</style>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<script>
+	// 삭제 버튼 클릭
+	$(document).ready(function() {
+		$("#btnDelete").click(function() {
+			location.href = '${path}/board/delete?bbsID=${boardvo.bbsID}'
+		});
+	});
+</script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
-	<div class="navbar-header">
+	<div class="naver-header">
 		<button type="button" class="navbar-toggle collapsed"
 			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-			aria-expanded="false"></button>
+			aria-expanded="false">
+			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+				class="icon-bar"></span>
+		</button>
 		<a class="navbar-brand" href="${path}/board/home">Spring Framework
 			게시판 만들기</a>
 	</div>
@@ -48,38 +55,44 @@ a, a:hover {
 		</c:if>
 	</div>
 	</nav>
+
 	<div class="container">
 		<div class="row">
-			<table class="table table-striped"
-				style="text-align: center; border: 1px;">
-				<thead>
-					<tr>
-						<th style="background-color: #eeeeee; text-align: center;">번호</th>
-						<th style="background-color: #eeeeee; text-align: center;">제목</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
-					</tr>
-				</thead>
-				<c:forEach var="row" items="${list}">
-					<tr>
-						<td>${row.bbsID}</td>
-						<td><a href="${path}/board/detail?bbsID=${row.bbsID}">${row.bbsTitle}</a></td>
-						<td>${row.userID}</td>
-						<td>${row.bbsDate}</td>
-					</tr>
-				</c:forEach>
-			</table>
+			<form method="post" action="${path}/board/board_update">
+				<table class="table table-striped"
+					style="text-align: center; border: 1px;">
+					<thead>
+						<tr>
+							<th colspan="1"
+								style="background-color: #eeeeee; text-align: center;">게시판
+								글쓰기 양식</th>
+						</tr>
+					</thead>
+					<thead>
+						<tr>
+							<td><input type="hidden" class="form-control"
+								value="${boardvo.bbsID}" placeholder="글 번호" name="bbsID"
+								maxlength="50"></td>
+						</tr>
+						<tr>
+							<td><input type="text" class="form-control"
+								value="${boardvo.bbsTitle}" placeholder="글 제목" name="bbsTitle"
+								maxlength="50"></td>
+						</tr>
+						<tr>
+							<td><input type="text" class="form-control"
+								value="${boardvo.bbsContent}" placeholder="글 내용"
+								name="bbsContent" maxlength="2048" style="height: 350px"></td>
 
-			<a href="bbs.jsp?pageNumber=<%="dd"%>"
-				class="btn btn-success btn-arraw-left">이전</a> <a
-				href="bbs.jsp?pageNumber=<%="dd"%>"
-				class="btn btn-success btn-arraw-left">다음</a> <a
-				href="${path}/board/write" class="btn btn-primary pull-right">글쓰기</a>
+						</tr>
+					</thead>
+				</table>
+				<input type="submit" class="btn btn-primary pull-right" value="수정">
+				<input type="button" id="btnDelete"
+					class="btn btn-primary pull-right" value="삭제">
+			</form>
 		</div>
 	</div>
-
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

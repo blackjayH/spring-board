@@ -18,6 +18,8 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Spring Framework 게시판 만들기</title>
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style>
 a, a:hover {
 	color: #000000;
@@ -25,20 +27,21 @@ a, a:hover {
 }
 </style>
 </head>
+
 <body>
 	<nav class="navbar navbar-default">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle collapsed"
 			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
 			aria-expanded="false"></button>
-		<a class="navbar-brand" href="${path}/board/home">Spring Framework
-			게시판 만들기</a>
+		<a class="navbar-brand" href="${path}/board/view/home">Spring
+			Framework 게시판 만들기</a>
 	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li><a href="${path}/board/home">메인</a></li>
-			<li class="active"><a href="${path}/board/main">게시판</a></li>
-			<li><a href="${path}/board/join">회원가입</a>
+			<li><a href="${path}/board/view/home">메인</a></li>
+			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
+			<li><a href="${path}/board/view/join">회원가입</a>
 		</ul>
 		<c:if test="${userID eq null}">
 			<%@ include file="board_menu_logout.jsp"%>
@@ -48,38 +51,59 @@ a, a:hover {
 		</c:if>
 	</div>
 	</nav>
+
+
 	<div class="container">
 		<div class="row">
+			<a href="${path}/board/view/paging?nowPage=1"
+				class="btn btn-success btn-arraw-left">처음</a> <a
+				href="${path}/board/view/paging?nowPage=${paging.nowPage-1}"
+				class="btn btn-success btn-arraw-left">이전</a> <a
+				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 1}"
+				class="btn btn-success btn-arraw-left">${paging.display * 5 + 1}</a> <a
+				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 2}"
+				class="btn btn-success btn-arraw-left">${paging.display * 5 + 2}</a> <a
+				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 3}"
+				class="btn btn-success btn-arraw-left">${paging.display * 5 + 3}</a> <a
+				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 4}"
+				class="btn btn-success btn-arraw-left">${paging.display * 5 + 4}</a> <a
+				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 5}"
+				class="btn btn-success btn-arraw-left">${paging.display * 5 + 5}</a> <a
+				href="${path}/board/view/paging?nowPage=${paging.nowPage+1}"
+				class="btn btn-success btn-arraw-left">다음</a> <a
+				href="${path}/board/view/paging?nowPage=${paging.lastPage}"
+				class="btn btn-success btn-arraw-left">끝</a> <a
+				href="${path}/board/view/write"
+				class="btn btn-primary btn-arraw-right">검색</a> <a
+				href="${path}/board/view/write" class="btn btn-primary pull-right">글쓰기</a>
+			전체 ${count} 개의 게시물이 있습니다. 현재 페이지는 ${paging.nowPage} 디스플레이는 ${paging.display}
+			마지막페이지${paging.lastPage} <br>
+
 			<table class="table table-striped"
 				style="text-align: center; border: 1px;">
+				<br>
 				<thead>
 					<tr>
 						<th style="background-color: #eeeeee; text-align: center;">번호</th>
 						<th style="background-color: #eeeeee; text-align: center;">제목</th>
 						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
 						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
+						<th style="background-color: #eeeeee; text-align: center;">조회수</th>
 					</tr>
 				</thead>
 				<c:forEach var="row" items="${list}">
 					<tr>
 						<td>${row.bbsID}</td>
-						<td><a href="${path}/board/detail?bbsID=${row.bbsID}">${row.bbsTitle}</a></td>
+						<td><a href="${path}/board/view/detail?bbsID=${row.bbsID}">${row.bbsTitle}</a></td>
 						<td>${row.userID}</td>
 						<td>${row.bbsDate}</td>
+						<td>${row.click}</td>
 					</tr>
 				</c:forEach>
 			</table>
-
-			<a href="bbs.jsp?pageNumber=<%="dd"%>"
-				class="btn btn-success btn-arraw-left">이전</a> <a
-				href="bbs.jsp?pageNumber=<%="dd"%>"
-				class="btn btn-success btn-arraw-left">다음</a> <a
-				href="${path}/board/write" class="btn btn-primary pull-right">글쓰기</a>
 		</div>
 	</div>
-
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

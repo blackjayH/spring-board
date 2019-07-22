@@ -31,9 +31,7 @@ public class DataSourceTest {
 	@Test
 	public void testTime() throws Exception {
 		System.out.println("완료");
-
-		System.out.println(((UserDAO) dao).getTime());
-		
+		System.out.println(((UserDAO) dao).getTime());	
 	}
 
 	@Test
@@ -42,15 +40,6 @@ public class DataSourceTest {
 		uservo.setId("xx");
 		uservo.setPw("xx");
 		dao.insertUser(uservo);
-		//System.out.println("완료");
-		/*
-		boolean tmp = dao.checkId("a");
-		boolean temp = false;
-		if (temp)
-			System.out.println("응"); 
-		 */
-		
-		
 	}
 
 }

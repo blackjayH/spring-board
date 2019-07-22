@@ -12,40 +12,30 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width" , initial-scale="1.0">
+<meta name="viewport" content="width=device-width" initial-scale="1.0">
 <link rel="stylesheet" href="${path}/resources/css/bootstrap.css">
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
 <title>Spring Framework 게시판 만들기</title>
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
-<script>
-	// 삭제 버튼 클릭
-	$(document).ready(function() {
-		$("#btnDelete").click(function() {
-			location.href = '${path}/board/delete?bbsID=${boardvo.bbsID}'
-		});
-	});
-</script>
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
+
 <body>
 	<nav class="navbar navbar-default">
 	<div class="naver-header">
 		<button type="button" class="navbar-toggle collapsed"
 			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-			aria-expanded="false">
-			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-				class="icon-bar"></span>
-		</button>
-		<a class="navbar-brand" href="${path}/board/home">Spring Framework
-			게시판 만들기</a>
+			aria-expanded="false"></button>
+		<a class="navbar-brand" href="${path}/board/view/home">Spring
+			Framework 게시판 만들기</a>
 	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li><a href="${path}/board/home">메인</a></li>
-			<li class="active"><a href="${path}/board/main">게시판</a></li>
-			<li><a href="${path}/board/join">회원가입</a>
+			<li><a href="${path}/board/view/home">메인</a></li>
+			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
+			<li><a href="${path}/board/view/join">회원가입</a>
 		</ul>
 		<c:if test="${userID eq null}">
 			<%@ include file="board_menu_logout.jsp"%>
@@ -58,7 +48,7 @@
 
 	<div class="container">
 		<div class="row">
-			<form method="post" action="${path}/board/board_update">
+			<form method="post" action="${path}/board/action/update">
 				<table class="table table-striped"
 					style="text-align: center; border: 1px;">
 					<thead>
@@ -87,12 +77,18 @@
 						</tr>
 					</thead>
 				</table>
-				<input type="submit" class="btn btn-primary pull-right" value="수정">
-				<input type="button" id="btnDelete"
-					class="btn btn-primary pull-right" value="삭제">
+				<input onclick="return confirm('정말로 수정하겠습니까?')" type="submit"
+					class="btn btn-primary pull-right" value="수정"> 
+					<c:if test="${countcomment == 0}">
+					<a
+					href="${path}/board/action/delete?bbsID=${boardvo.bbsID}"
+					class="btn btn-primary pull-right">삭제</a>
+					</c:if>
+					
 			</form>
 		</div>
 	</div>
+
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

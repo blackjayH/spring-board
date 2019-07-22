@@ -11,12 +11,10 @@
 	// 아이디 중복 체크 버튼
 	$(document).ready(function() {
 		$("#btnCheck").click(function() {
-			var form = {
-				id : $('#id').val()
-			}
+			var id = $('#id').val();
 			$.ajax({
 				type : "GET",
-				data : form,
+				data : id,
 				url : "user_checkId",
 				success : function(data) {
 					if (data == "no")

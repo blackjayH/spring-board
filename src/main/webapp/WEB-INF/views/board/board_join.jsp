@@ -18,47 +18,43 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Spring Framework 게시판 만들기</title>
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<script
+		src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
+	// ID 중복체크 액션 POST
 	$(document).ready(function() {
 		$("#btnCheck").click(function() {
-			if ($('#id').val().length < 1)
+			if ($('#id').val().length < 1) {
 				alert('아이디 미입력');
-			else if ($('#pw').val().length < 1)
-				alert('페스워드 미입력');
-			else if ($('#pw').val() != $('#pw2').val())
-				alert('페스워드 확인해주세요');
-			else {
+			} else {
 				var form = {
-					id : $('#id').val(),
-					pw : $('#pw').val()
+					id : $('#id').val()
 				};
-				$.ajax({
-					type : "POST",
-					data : form,
-					url : "${path}/user/user_checkId",
-					success : function(data) {
-						if (data == "no")
-							alert("사용불가");
-						else {
-							alert("사용가능");
-							var con_test = confirm("이 아이디를 사용하시겠습니까?");
-							if (con_test == true) {
-								alert("회원가입 버튼을 눌러주세요.")
-							} else {
-								alert("중복된 아이디입니다.\n다른 id를 입력해주세요.")
-							}
-						}
-					},
-					error : function(error) {
-						alert(error);
-					}
-				});
 			}
-
+			$.ajax({
+				type : "POST",
+				data : form,
+				url : "${path}/user/action/checkid",
+				success : function(data) {
+					if (data == "no")
+						alert("중복된 아이디입니다.\n사용불가");
+					else {
+						alert("사용가능");
+						var con_test = confirm("이 아이디를 사용하시겠습니까?");
+						if (con_test == true) {
+							alert("회원가입 버튼을 눌러주세요.")
+						} else {
+							alert("다른 id를 입력해주세요.")
+						}
+					}
+				},
+				error : function(error) {
+					alert(error);
+				}
+			});
 		});
 	});
-
+	// 회원가입 액션 POST
 	$(document).ready(function() {
 		$("#btnSubmit").click(function() {
 			if ($('#id').val().length < 1)
@@ -75,13 +71,12 @@
 				$.ajax({
 					type : "POST",
 					data : form,
-					url : "${path}/user/user_add",
+					url : "${path}/user/action/join",
 					success : function(data) {
 						if (data == "yes") {
 							alert("가입완료. 로그인 화면으로 이동합니다.");
-							location.href = 'login'
+							location.href = '${path}/board/view/login'
 						}
-
 					},
 					error : function(error) {
 						alert(error);
@@ -92,6 +87,7 @@
 	});
 </script>
 </head>
+
 <body>
 	<nav class="navbar navbar-default">
 	<div class="naver-header">
@@ -101,14 +97,14 @@
 			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 				class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="${path}/board/home">Spring Framework
-			게시판 만들기</a>
+		<a class="navbar-brand" href="${path}/board/view/home">Spring
+			Framework 게시판 만들기</a>
 	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li><a href="${path}/board/home">메인</a>
-			<li><a href="${path}/board/main">게시판</a>
-			<li><a href="${path}/board/join">회원가입</a>
+			<li><a href="${path}/board/view/home">메인</a>
+			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
+			<li><a href="${path}/board/view/join">회원가입</a>
 		</ul>
 		<c:if test="${userID eq null}">
 			<%@ include file="board_menu_logout.jsp"%>
@@ -123,7 +119,7 @@
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
 			<div class="jumbotron" style="padding-top: 20px;">
-				<form name="form2" method="post" action="${path}/user/user_add">
+				<form name="form2" method="post" action="${path}/user/action/add">
 					<h3 style="text-align: center;">회원가입 화면</h3>
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="아이디" id="id"
@@ -145,12 +141,12 @@
 						<input type="button" id="btnSubmit"
 							class="btn btn-primary form-control" value="회원가입">
 					</div>
-
 				</form>
 			</div>
 		</div>
 		<div class="col-lg-4"></div>
 	</div>
+
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

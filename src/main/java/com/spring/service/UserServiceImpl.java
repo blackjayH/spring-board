@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 		return userdao.listAll();
 	}
 
-	// 02. 회원 등록
+	// 02. 회원 가입
 	@Override
 	public void insertUser(UserVO uservo) {
 		userdao.insertUser(uservo);
@@ -33,31 +33,32 @@ public class UserServiceImpl implements UserService {
 		return userdao.viewUser(id);
 	}
 
-	// 04. 회원 정보 수정 처리
+	// 04. 회원 정보 수정 
 	@Override
 	public void updateUser(UserVO uservo) {
 		userdao.updateUser(uservo);
 	}
 
-	// 05. 회원 정보 삭제 처리
+	// 05. 회원 정보 삭제
 	@Override
 	public void deleteUser(UserVO uservo) {
 		userdao.deleteUser(uservo);
 	}
 
-	// 06. 로그인시 비밀번호 확인
+	// 06. 회원 정보 확인(로그인)
 	@Override
 	public boolean checkPw(String id, String pw) {
 		return userdao.checkPw(id, pw);
 	}
 
-	// 07. 회원가입 및 로그인시 아이디 중복 체크
+	// 07. 아이디 중복 체크(회원가입)
 	@Override
 	public boolean checkId(String id) {
 		return userdao.checkId(id);
 	}
 
 	// 08. 유저 로그인
+	@Override
 	public String loginUser(UserVO uservo, HttpSession session) {
 		boolean tf = userdao.checkId(uservo.getId());
 		boolean tf2 = userdao.checkPw(uservo.getId(), uservo.getPw());

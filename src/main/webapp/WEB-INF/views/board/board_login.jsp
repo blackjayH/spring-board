@@ -18,8 +18,10 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Spring Framework 게시판 만들기</title>
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<script
+		src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
+	// 로그인 액션 POST
 	$(document).ready(function() {
 		$("#btnSubmit").click(function() {
 			if ($('#id').val().length < 1)
@@ -34,7 +36,7 @@
 				$.ajax({
 					type : "POST",
 					data : form,
-					url : "${path}/user/user_checkIdPw",
+					url : "${path}/user/action/login",
 					success : function(data) {
 						if (data == "pwno")
 							alert("비밀번호 틀림");
@@ -42,7 +44,7 @@
 							alert("없는 아이디");
 						else if (data == "yes") {
 							alert("성공");
-							location.href = 'main'
+							location.href = '${path}/board/view/paging?nowPage=1'
 						} else
 							alert("에러");
 					},
@@ -54,14 +56,15 @@
 
 		});
 	});
-
+	// 회원 가입으로 이동
 	$(document).ready(function() {
 		$("#btnJoin").click(function() {
-			location.href = 'join';
+			location.href = '${path}/board/view/join';
 		});
 	});
 </script>
 </head>
+
 <body>
 	<nav class="navbar navbar-default">
 	<div class="naver-header">
@@ -71,14 +74,14 @@
 			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 				class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="${path}/board/home">Spring Framework
-			게시판 만들기</a>
+		<a class="navbar-brand" href="${path}/board/view/home">Spring
+			Framework 게시판 만들기</a>
 	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li><a href="${path}/board/home">메인</a>
-			<li><a href="${path}/board/main">게시판</a>
-			<li><a href="${path}/board/join">회원가입</a>
+			<li><a href="${path}/board/view/home">메인</a>
+			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
+			<li><a href="${path}/board/view/join">회원가입</a>
 		</ul>
 		<c:if test="${userID eq null}">
 			<%@ include file="board_menu_logout.jsp"%>
@@ -116,6 +119,7 @@
 		</div>
 		<div class="col-lg-4"></div>
 	</div>
+
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -24,35 +24,27 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
-
 	</beans:bean>
 
-	<context:component-scan base-package="com.spring" />
+	<context:component-scan
+		base-package="com.spring" />
 
-<!-- 
-interceptor session 로그인 여부 확인 
-	<beans:bean id="springInterceptor"
-		class="com.spring.interceptor.SpringInterceptor" />
+	<!-- interceptor session 로그인 여부 확인 -->
+	<beans:bean id="loginInterceptor"
+		class="com.spring.interceptor.LoginInterceptor" />
 	<interceptors>
 		<interceptor>
-			<mapping path="/" />
-			<beans:ref bean="springInterceptor" />
-
-
+			<mapping path="/board/view/write" />
+			<beans:ref bean="loginInterceptor" />
 		</interceptor>
 	</interceptors>
- -->
- <beans:bean id="springInterceptor"
-		class="com.spring.interceptor.SpringInterceptor" />
+	<!-- interceptor session 유저 본인 확인 -->
+	<beans:bean id="sessionInterceptor"
+		class="com.spring.interceptor.SessionInterceptor" />
 	<interceptors>
 		<interceptor>
-			<mapping path="/board/write" />
-			<mapping path="/board/edit" />
-			<beans:ref bean="springInterceptor" />
-
-
+			<mapping path="/board/view/edit" />
+			<beans:ref bean="sessionInterceptor" />
 		</interceptor>
 	</interceptors>
-	
-
 </beans:beans>

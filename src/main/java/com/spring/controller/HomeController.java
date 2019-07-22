@@ -36,17 +36,17 @@ public class HomeController {
 		return "home";
 	}
 
+	// 변경한 메인 홈 
 	@RequestMapping("/")
 	public String main() {
 		return "board/board_home";
 	}
 
+	// interceptor 테스트(미사용)
 	@RequestMapping(value = "/interceptor")
 	public ModelAndView interceptorTest() throws Exception {
-		
 		ModelAndView mv = new ModelAndView("");
 		logger.info("인터셉터 테스트입니다!");
-
 		return mv;
 	}
 

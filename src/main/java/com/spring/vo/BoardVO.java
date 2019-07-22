@@ -1,12 +1,13 @@
 package com.spring.vo;
 
 public class BoardVO {
-	private int bbsID;
-	private String bbsTitle;
-	private String userID;
-	private String bbsDate;
-	private String bbsContent;
-	private int bbsAvailable;
+	private int bbsID; // 게시물 번호
+	private String bbsTitle; // 게시물 제목
+	private String userID; // 게시물 작성 유저
+	private String bbsDate; // 게시물 작성 날짜
+	private String bbsContent; // 게시물 내용
+	private int bbsAvailable; // 게시물 표시여부
+	private int click; // 게시물 조회수
 
 	public int getBbsID() {
 		return bbsID;
@@ -55,10 +56,19 @@ public class BoardVO {
 	public void setBbsAvailable(int bbsAvailable) {
 		this.bbsAvailable = bbsAvailable;
 	}
-	
+
+	public int getClick() {
+		return click;
+	}
+
+	public void setClick(int click) {
+		this.click = click;
+	}
+
 	@Override
 	public String toString() {
-		return "UserVO [bbsID=" + bbsID + ", bbsTitle=" + bbsTitle + ", userID=" + userID + ", bbsDate=" + bbsDate + ", bbsContent=" + bbsContent + ", bbsAvailable=" + bbsAvailable + "]";
+		return "BoardVO [bbsID=" + bbsID + ", bbsTitle=" + bbsTitle + ", userID=" + userID + ", bbsDate=" + bbsDate
+				+ ", bbsContent=" + bbsContent + ", bbsAvailable=" + bbsAvailable + "]";
 	}
 
 }

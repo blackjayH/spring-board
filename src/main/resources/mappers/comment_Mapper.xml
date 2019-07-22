@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.website.commentMapper">
+	<!-- 00. 시간 입력 -->
+	<select id="getTime" resultType="string">
+		select now()
+	</select>
+
+	<!-- 01. 전체 댓글 조회 -->
+	<select id="listAll" parameterType="int"
+		resultType="com.spring.vo.CommentVO">
+		SELECT * FROM comment WHERE
+		bbsID
+		=
+		#{bbsID} and
+		commentAvailable = 1
+		ORDER BY commentID desc
+	</select>
+
+	<!-- 02. 회원 댓글 등록 -->
+	<insert id="insertComment"
+		parameterType="com.spring.vo.CommentVO">
+		insert into comment(bbsID,
+		userID, commentID,
+		commentDate, commentContent, commentAvailable, commentSecret)
+		values
+		(#{bbsID},
+		#{userID}, #{commentID}, #{commentDate}, #{commentContent},
+		#{commentAvailable}, #{commentSecret}
+		)
+	</insert>
+
+	<!-- 03. 회원 댓글 상세 조회 -->
+	<select id="viewComment" resultType="com.spring.vo.CommentVO">
+		select * from comment where
+		bbsID
+		=
+		#{bbsID}
+	</select>
+
+	<!-- 04. 회원 댓글 수정 -->
+	<update id="updateComment"
+		parameterType="com.spring.vo.CommentVO">
+		update comment set
+		commentContent=#{commentContent},
+		commentSecret=#{commentSecret}
+		where commentID= #{commentID}
+	</update>
+
+	<!-- 05. 회원 댓글 삭제 -->
+	<update id="deleteComment" parameterType="int">
+		update comment set
+		commentAvailable = 0 where commentID=
+		#{commentID}
+	</update>
+
+	<!-- 06. 회원 댓글 개수 조회(게시판 상세 목록) -->
+	<select id="getCount" resultType="int" parameterType="int">
+		SELECT
+		COUNT(*) FROM comment
+		WHERE commentAvailable = 1 and bbsID = #{bbsID}
+	</select>
+
+	<!-- 07. 회원 댓글 본인 여부 확인 -->
+	<select id="checkUser" resultType="String">
+		SELECT userID FROM comment
+		where commentID= #{commentID}
+	</select>
+
+	<!-- 08. 회원 댓글 개수 조회(댓글 등록) -->
+	<select id="getNext" resultType="int" parameterType="int">
+		SELECT
+		COUNT(*) FROM comment where bbsID = #{bbsID}
+	</select>
+</mapper>

@@ -16,11 +16,12 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
 <title>Spring Framework 게시판 만들기</title>
+<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
-<body>
 
+<body>
 	<nav class="navbar navbar-default">
 	<div class="naver-header">
 		<button type="button" class="navbar-toggle collapsed"
@@ -29,13 +30,15 @@
 			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 				class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="${path}/board/home">Spring Framework 게시판 만들기</a>
+		<a class="navbar-brand" href="${path}/board/view/home">Spring
+			Framework 게시판 만들기</a>
 	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
-			<li><a href="${path}/board/home">메인</a></li>
-			<li class="active"><a href="${path}/board/main">게시판</a></li>
-			<li><a href="${path}/board/join">회원가입</a>
+			<li><a href="${path}/board/view/home">메인</a></li>
+			<li class="active">
+			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
+			<li><a href="${path}/board/view/join">회원가입</a>
 		</ul>
 		<c:if test="${userID eq null}">
 			<%@ include file="board_menu_logout.jsp"%>
@@ -48,7 +51,7 @@
 
 	<div class="container">
 		<div class="row">
-			<form method="post" action="${path}/board/board_add">
+			<form method="post" action="${path}/board/action/add">
 				<table class="table table-striped"
 					style="text-align: center; border: 1px;">
 					<thead>
@@ -65,7 +68,7 @@
 						</tr>
 						<tr>
 							<td><textarea class="form-control" placeholder="글 내용"
-									name="bbsContent" maxlength="2048" style="height: 350px"></textarea>
+									name="bbsContent" maxlength="2048" style="height: 100px"></textarea>
 							</td>
 						</tr>
 					</tbody>
@@ -75,8 +78,6 @@
 		</div>
 	</div>
 
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

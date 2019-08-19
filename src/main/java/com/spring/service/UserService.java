@@ -33,4 +33,7 @@ public interface UserService {
 
 	// 09. 유저 로그아웃
 	public void logoutUser(HttpSession session);
+	
+	// 10. 유저 정보확인
+	public String checkUser(UserVO uservo);
 }

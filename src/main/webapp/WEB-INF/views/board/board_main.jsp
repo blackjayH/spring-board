@@ -19,7 +19,16 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Spring Framework 게시판 만들기</title>
 <script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+	/* 게시물 삭제 Restful GET 
+	$(document).ready(function() {
+		$("#btnDetail").click(function() {
+			alert('클릭');
+		});
+	});
+	*/
+</script>
 <style>
 a, a:hover {
 	color: #000000;
@@ -59,25 +68,25 @@ a, a:hover {
 				class="btn btn-success btn-arraw-left">처음</a> <a
 				href="${path}/board/view/paging?nowPage=${paging.nowPage-1}"
 				class="btn btn-success btn-arraw-left">이전</a> <a
-				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 1}"
-				class="btn btn-success btn-arraw-left">${paging.display * 5 + 1}</a> <a
-				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 2}"
-				class="btn btn-success btn-arraw-left">${paging.display * 5 + 2}</a> <a
-				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 3}"
-				class="btn btn-success btn-arraw-left">${paging.display * 5 + 3}</a> <a
-				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 4}"
-				class="btn btn-success btn-arraw-left">${paging.display * 5 + 4}</a> <a
-				href="${path}/board/view/paging?nowPage=${paging.display * 5 + 5}"
-				class="btn btn-success btn-arraw-left">${paging.display * 5 + 5}</a> <a
-				href="${path}/board/view/paging?nowPage=${paging.nowPage+1}"
+				href="${path}/board/view/paging?nowPage=${paging.rootPage * 5 + 1}"
+				class="btn btn-success btn-arraw-left">${paging.rootPage * 5 + 1}</a>
+			<a href="${path}/board/view/paging?nowPage=${paging.rootPage * 5 + 2}"
+				class="btn btn-success btn-arraw-left">${paging.rootPage * 5 + 2}</a>
+			<a href="${path}/board/view/paging?nowPage=${paging.rootPage * 5 + 3}"
+				class="btn btn-success btn-arraw-left">${paging.rootPage * 5 + 3}</a>
+			<a href="${path}/board/view/paging?nowPage=${paging.rootPage * 5 + 4}"
+				class="btn btn-success btn-arraw-left">${paging.rootPage * 5 + 4}</a>
+			<a href="${path}/board/view/paging?nowPage=${paging.rootPage * 5 + 5}"
+				class="btn btn-success btn-arraw-left">${paging.rootPage * 5 + 5}</a>
+			<a href="${path}/board/view/paging?nowPage=${paging.nowPage+1}"
 				class="btn btn-success btn-arraw-left">다음</a> <a
 				href="${path}/board/view/paging?nowPage=${paging.lastPage}"
 				class="btn btn-success btn-arraw-left">끝</a> <a
 				href="${path}/board/view/write"
 				class="btn btn-primary btn-arraw-right">검색</a> <a
 				href="${path}/board/view/write" class="btn btn-primary pull-right">글쓰기</a>
-			전체 ${count} 개의 게시물이 있습니다. 현재 페이지는 ${paging.nowPage} 디스플레이는 ${paging.display}
-			마지막페이지${paging.lastPage} <br>
+			전체 ${count} 개의 게시물이 있습니다. 루트페이지는
+			${paging.rootPage} 현재 페이지는 ${paging.nowPage} 마지막페이지${paging.lastPage} <br>
 
 			<table class="table table-striped"
 				style="text-align: center; border: 1px;">
@@ -93,7 +102,7 @@ a, a:hover {
 				</thead>
 				<c:forEach var="row" items="${list}">
 					<tr>
-						<td>${row.bbsID}</td>
+						<td><input type="button" id="btnDetail" value="${row.bbsID}">${row.bbsID}</td>
 						<td><a href="${path}/board/view/detail?bbsID=${row.bbsID}">${row.bbsTitle}</a></td>
 						<td>${row.userID}</td>
 						<td>${row.bbsDate}</td>
@@ -103,7 +112,7 @@ a, a:hover {
 			</table>
 		</div>
 	</div>
-	
+
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -43,6 +43,12 @@ public class BoardController {
 		return "board/board_join";
 	}
 
+	// 게시판 회원탈퇴 화면 이동
+	@RequestMapping("/board/view/withdrawal")
+	public String viewWithdrawal() {
+		return "board/board_withdrawal";
+	}
+
 	// 게시판 게시물 작성 화면 이동
 	@RequestMapping("/board/view/write")
 	public String viewWrite() {
@@ -76,8 +82,8 @@ public class BoardController {
 	// 게시판 페이지 이동 수정본 (수정 필요 컨트롤러 단순화)
 	@RequestMapping("/board/view/paging")
 	public String viewPaging(@RequestParam int nowPage, Model model) {
-		int count = boardservice.getCount();
-		int perPage = 2;
+		int count = boardservice.getCount(); // 전체 게시물의 수
+		int perPage = 2; // 페이지당 게시물 수
 		Paging paging = new Paging(nowPage, perPage, count);
 
 		List<BoardVO> list = boardservice.listPage(paging);

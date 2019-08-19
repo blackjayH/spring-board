@@ -5,12 +5,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,6 +57,18 @@ public class UserController {
 		return "redirect:/board/view/home";
 	}
 
+	// 회원 탈퇴 액션
+	@RequestMapping("/user/action/withdrawal")
+	@ResponseBody
+	public String userDelete(@ModelAttribute UserVO uservo, HttpSession session) {
+		String str = userservice.checkUser(uservo);
+		if (str.equals("yes")) { // 탈퇴 성공
+			userservice.logoutUser(session);
+			userservice.deleteUser(uservo);
+		}
+		return str;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
 	// 회원 목록 보기(미사용)
@@ -68,31 +77,6 @@ public class UserController {
 		List<UserVO> list = userservice.listAll();
 		model.addAttribute("list", list);
 		return "user/user_list";
-	}
-
-	// 회원 가입 하러가기
-	@RequestMapping("/user/user_join")
-	public void userjoin() {
-
-	}
-
-	// 로그인 하러가기
-	@RequestMapping("/user/user_login")
-	public void userlogin() {
-
-	}
-
-	// 유저 탈퇴(미사용)
-	@RequestMapping("/user/user_leave")
-	public String userDelete(@ModelAttribute UserVO uservo, Model model) {
-		boolean result = userservice.checkPw(uservo.getId(), uservo.getPw());
-		if (result) { // 탈퇴 성공
-			userservice.deleteUser(uservo);
-			return "redirect:user_list";
-		} else { // 탈퇴 실패
-			model.addAttribute("message", "탈퇴 실패");
-			return "redirect:user_detail";
-		}
 	}
 
 	// 유저 정보 수정(미사용)

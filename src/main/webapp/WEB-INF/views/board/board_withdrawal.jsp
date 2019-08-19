@@ -8,6 +8,7 @@
 <!-- context 경로 -->
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -19,48 +20,39 @@
 <title>Spring Framework 게시판 만들기</title>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
-	// 로그인 액션 POST
+	// 회원탈퇴 액션 POST
 	$(document).ready(function() {
-		$("#btnSubmit").click(function() {
-			if ($('#id').val().length < 1){
+		$("#btnWithdrawal").click(function() {
+			if ($('#id').val().length < 1)
 				alert('아이디 미입력');
-			}
-				
-			else if ($('#pw').val().length < 1){
+			else if ($('#pw').val().length < 1)
 				alert('페스워드 미입력');
-			}
-				
 			else {
-			var form = {
-				id : $('#id').val(),
-				pw : $('#pw').val()
-			};
-			$.ajax({
-				type : "POST",
-				data : form,
-				url : "${path}/user/action/login",
-				success : function(data) {
-					if (data == "pwno")
-						alert("비밀번호 틀림");
-					else if (data == "idno")
-						alert("없는 아이디");
-					else if (data == "yes") {
-						alert("성공");
-						location.href = '${path}/board/view/paging?nowPage=1'
-					} else
-						alert("에러");
-				},
-				error : function(error) {
-					alert(error);
-				}
-			});
+				var form = {
+					id : $('#id').val(),
+					pw : $('#pw').val()
+				};
+				$.ajax({
+					type : "POST",
+					data : form,
+					url : "${path}/user/action/withdrawal",
+					success : function(data) {
+						if (data == "pwno")
+							alert("비밀번호 틀림");
+						else if (data == "idno")
+							alert("없는 아이디");
+						else if (data == "yes") {
+							alert("탈퇴 완료. 홈 화면으로 이동합니다.");
+							location.href = '${path}/board/view/home'
+						} 
+						
+	
+					},
+					error : function(error) {
+						alert(error);
+					}
+				});
 			}
-		});
-	});
-	// 회원 가입으로 이동
-	$(document).ready(function() {
-		$("#btnJoin").click(function() {
-			location.href = '${path}/board/view/join';
 		});
 	});
 </script>
@@ -97,23 +89,19 @@
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
 			<div class="jumbotron" style="padding-top: 20px;">
-				<form name="form2" method="post">
-					<h3 style="text-align: center;">로그인 화면</h3>
+				<form name="form2" method="post" action="${path}/user/action/add">
+					<h3 style="text-align: center;">회원탈퇴 화면</h3>
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="아이디" id="id"
 							name="id" maxlength="20">
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="비밀번호" id="pw"
-							name="pw" maxlength="20">
-					</div>
+						<input type="password" class="form-control" placeholder="비밀번호"
+							id="pw" name="pw" maxlength="20">
+					</div>					
 					<div class="form-group">
-						<input type="button" id="btnSubmit"
-							class="btn btn-primary form-control" value="로그인">
-					</div>
-					<div class="form-group">
-						<input type="button" id="btnJoin"
-							class="btn btn-primary form-control" value="회원가입">
+						<input type="button" id="btnWithdrawal"
+							class="btn btn-primary form-control" value="회원탈퇴">
 					</div>
 				</form>
 			</div>

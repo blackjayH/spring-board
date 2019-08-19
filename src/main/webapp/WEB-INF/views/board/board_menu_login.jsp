@@ -20,6 +20,7 @@
 			aria-expanded="false">${userID}<span class="caret"></span></a>
 			<ul class="dropdown-menu">
 				<li><a href="${path}/user/action/logout">로그아웃</a></li>
+				<li><a href="${path}/board/view/withdrawal">회원탈퇴</a></li>
 			</ul></li>
 	</ul>
 </body>

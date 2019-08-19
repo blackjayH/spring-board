@@ -8,7 +8,6 @@
 <!-- context 경로 -->
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -19,7 +18,59 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Spring Framework 게시판 만들기</title>
 <script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+	// 게시물 수정 Restful PUT 
+	$(document).ready(function() {
+		$("#btnUpdate").click(function() {
+			var bbsID = $('#bbsID').val();
+			var bbsTitle = $('#bbsTitle').val();
+			var bbsContent = $('#bbsContent').val();
+			$.ajax({
+				type : "PUT",
+				data : JSON.stringify({
+					bbsID : bbsID,
+					bbsTitle : bbsTitle,
+					bbsContent : bbsContent
+				}),
+
+				url : "${path}/board2",
+				contentType : 'application/json;charset=utf-8',
+				dataType : 'json',
+				success : function(data) {
+					alert("성공");
+					location.href = '${path}/board/view/paging?nowPage=1'
+				},
+				error : function(error) {
+					alert(error);
+				}
+			});
+		});
+	});
+
+	// 게시물 삭제 Restful DELETE 
+	$(document).ready(function() {
+		$("#btnDelete").click(function() {
+			var bbsID = $('#bbsID').val();
+			$.ajax({
+				type : "DELETE",
+				data : JSON.stringify({
+					bbsID : bbsID
+				}),
+				url : "${path}/board2/"+bbsID,
+				contentType : 'application/json;charset=utf-8',
+				dataType : 'json',
+				success : function(data) {
+					alert("성공");
+					location.href = '${path}/board/view/paging?nowPage=1'
+				},
+				error : function(error) {
+					alert(error);
+				}
+			});
+		});
+	});
+</script>
 </head>
 
 <body>
@@ -61,30 +112,33 @@
 					<thead>
 						<tr>
 							<td><input type="hidden" class="form-control"
-								value="${boardvo.bbsID}" placeholder="글 번호" name="bbsID"
+								value="${boardvo.bbsID}" placeholder="글 번호" name="bbsID" id="bbsID"
 								maxlength="50"></td>
 						</tr>
 						<tr>
 							<td><input type="text" class="form-control"
-								value="${boardvo.bbsTitle}" placeholder="글 제목" name="bbsTitle"
+								value="${boardvo.bbsTitle}" placeholder="글 제목" name="bbsTitle" id="bbsTitle"
 								maxlength="50"></td>
 						</tr>
 						<tr>
 							<td><input type="text" class="form-control"
 								value="${boardvo.bbsContent}" placeholder="글 내용"
-								name="bbsContent" maxlength="2048" style="height: 350px"></td>
+								name="bbsContent" id="bbsContent" maxlength="2048" style="height: 350px"></td>
 
 						</tr>
 					</thead>
 				</table>
 				<input onclick="return confirm('정말로 수정하겠습니까?')" type="submit"
-					class="btn btn-primary pull-right" value="수정"> 
-					<c:if test="${countcomment == 0}">
-					<a
-					href="${path}/board/action/delete?bbsID=${boardvo.bbsID}"
-					class="btn btn-primary pull-right">삭제</a>
-					</c:if>
-					
+					class="btn btn-primary pull-right" value="수정">
+				<c:if test="${countcomment == 0}">
+					<a href="${path}/board/action/delete?bbsID=${boardvo.bbsID}"
+						class="btn btn-primary pull-right">삭제</a>
+				</c:if>
+				<input type="button" id="btnUpdate"
+					class="btn btn-primary form-control" value="수정 REST"> <input
+					type="button" id="btnDelete" class="btn btn-primary form-control"
+					value="삭제 REST">
+
 			</form>
 		</div>
 	</div>

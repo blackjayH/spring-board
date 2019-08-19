@@ -1,7 +1,9 @@
-package com.spring.website;
+package com.spring.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+
+import javax.inject.Inject;
 
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -13,6 +15,8 @@ public class MySQLConnectionTest {
 	private String user = "root";
 	private String pw = "wldnrwldnr1";
 
+	
+	
 	Logger logger = LoggerFactory.getLogger(MySQLConnectionTest.class);
 	@Test
 	public void testConnection() throws Exception {

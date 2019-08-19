@@ -18,7 +18,36 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Spring Framework 게시판 만들기</title>
 <script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+	// 게시물 작성 Restful POST 
+	$(document).ready(function() {
+		$("#btnSubmit").click(function() {
+			var bbsTitle = $('#bbsTitle').val();
+			var bbsContent = $('#bbsContent').val();
+			$.ajax({
+				type : "POST",
+				data : JSON.stringify({
+					bbsTitle : bbsTitle,
+					bbsContent : bbsContent
+				}),
+				url : "${path}/board2",
+				contentType : 'application/json;charset=utf-8',
+				dataType : 'json',
+				success : function(response) {
+					if(response.result == true){
+						alert("성공");
+						location.href = '${path}/board/view/paging?nowPage=1'	
+					}
+										
+				},
+				error : function(error) {
+					alert(error);
+				}
+			});
+		});
+	});
+</script>
 </head>
 
 <body>
@@ -64,16 +93,20 @@
 					<tbody>
 						<tr>
 							<td><input type="text" class="form-control"
-								placeholder="글제목" name="bbsTitle" maxlength="50"></td>
+								placeholder="글제목" name="bbsTitle" id="bbsTitle" maxlength="50"></td>
 						</tr>
 						<tr>
 							<td><textarea class="form-control" placeholder="글 내용"
-									name="bbsContent" maxlength="2048" style="height: 100px"></textarea>
-							</td>
+									name="bbsContent" id="bbsContent" maxlength="2048"
+									style="height: 100px"></textarea></td>
 						</tr>
 					</tbody>
 				</table>
 				<input type="submit" class="btn btn-primary pull-right" value="저장">
+
+				<input type="button" id="btnSubmit"
+					class="btn btn-primary form-control" value="저장 REST">
+
 			</form>
 		</div>
 	</div>

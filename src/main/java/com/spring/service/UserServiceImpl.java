@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 		return userdao.viewUser(id);
 	}
 
-	// 04. 회원 정보 수정 
+	// 04. 회원 정보 수정
 	@Override
 	public void updateUser(UserVO uservo) {
 		userdao.updateUser(uservo);
@@ -79,5 +79,21 @@ public class UserServiceImpl implements UserService {
 	// 09. 유저 로그아웃
 	public void logoutUser(HttpSession session) {
 		session.invalidate();
+	}
+
+	// 10. 유저 정보확인
+	public String checkUser(UserVO uservo) {
+		boolean tf = userdao.checkId(uservo.getId());
+		boolean tf2 = userdao.checkPw(uservo.getId(), uservo.getPw());
+		String str;
+		if (tf) {
+			if (tf2)
+				str = "yes";
+			else
+				str = "pwno";
+		} else {
+			str = "idno";
+		}
+		return str;
 	}
 }

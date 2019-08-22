@@ -29,7 +29,6 @@
 
 	<context:component-scan
 		base-package="com.spring" />
-
 	
 	<!-- aop interface 관련 설정(dao / service 상속시 문제 발생했었음 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>

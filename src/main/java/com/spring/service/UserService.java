@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.spring.vo.User;
 import com.spring.vo.UserVO;
 
 public interface UserService {
@@ -33,7 +34,19 @@ public interface UserService {
 
 	// 09. 유저 로그아웃
 	public void logoutUser(HttpSession session);
-	
+
 	// 10. 유저 정보확인
 	public String checkUser(UserVO uservo);
+
+	// jpa 회원 가입
+	public void insertjpaUser(User user);
+
+	// jpa 회원 정보 상세 조회
+	public User viewjpaUser(User user);
+
+	// jpa 회원 정보 수정
+	public void updatejpaUser(User user);
+
+	// jpa 회원 정보 삭제
+	public void deletejpaUser(User user);
 }

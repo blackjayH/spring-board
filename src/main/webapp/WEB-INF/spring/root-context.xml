@@ -50,8 +50,10 @@
 	</bean>
 	<tx:annotation-driven />
 
-	<!-- JUnit 테스트 -->
-	<context:component-scan
-		base-package="com.spring" />
+
+	<!-- JUnit 테스트	--> 
+	<context:component-scan base-package="com.spring" /> 
+
+	
 
 </beans>

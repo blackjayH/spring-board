@@ -1,6 +1,8 @@
 package com.spring.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.service.UserService;
+import com.spring.vo.User;
 import com.spring.vo.UserVO;
 
 @Controller
@@ -67,6 +70,36 @@ public class UserController {
 			userservice.deleteUser(uservo);
 		}
 		return str;
+	}
+
+	// JPA 테스트 add
+	@RequestMapping("/user/jpa/add")
+	@ResponseBody
+	public Map<String, Object> AddjpaUser(@ModelAttribute User user) {
+		userservice.insertjpaUser(user);
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", Boolean.TRUE);
+		return result;
+	}
+
+	// JPA 테스트 update
+	@RequestMapping("/user/jpa/update")
+	@ResponseBody
+	public Map<String, Object> UpdatejpaUser(@ModelAttribute User user) {
+		userservice.updatejpaUser(user);
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", Boolean.TRUE);
+		return result;
+	}
+
+	// JPA 테스트 delete
+	@RequestMapping("/user/jpa/delete")
+	@ResponseBody
+	public Map<String, Object> DeletejpaUser(@ModelAttribute User user) {
+		userservice.deletejpaUser(user);
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", Boolean.TRUE);
+		return result;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////

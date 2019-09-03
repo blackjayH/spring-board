@@ -36,6 +36,7 @@
 			<li><a href="${path}/board/view/home">메인</a></li>
 			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
 			<li><a href="${path}/board/view/join">회원가입</a>
+			<li><a href="${path}/board/view/user">테스트</a>
 		</ul>
 		<c:if test="${userID eq null}">
 			<%@ include file="board_menu_logout.jsp"%>

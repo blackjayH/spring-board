@@ -5,15 +5,21 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.spring.vo.User;
 import com.spring.vo.UserVO;
-
 
 @Repository
 public class UserDAOImpl implements UserDAO {
+	
+
 	@Inject
 	private SqlSession sqlSession;
 
@@ -54,7 +60,7 @@ public class UserDAOImpl implements UserDAO {
 	public void deleteUser(UserVO uservo) {
 		sqlSession.delete(namespace + ".deleteUser", uservo);
 	}
-		
+
 	// 06. 회원 정보 확인(로그인)
 	@Override
 	public boolean checkPw(String id, String pw) {
@@ -78,5 +84,86 @@ public class UserDAOImpl implements UserDAO {
 		if (count == 1)
 			result = true;
 		return result;
+	}
+
+	// jpa 회원 가입
+	@Override
+	public void insertjpaUser(User user) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
+		// 엔티티 매니저
+		EntityManager em = emf.createEntityManager();
+		// 트랜잭션 획득
+		EntityTransaction tx = em.getTransaction();	
+		try {
+			tx.begin();
+			em.persist(user);
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		emf.close();
+	}
+
+	// jpa 회원 정보 상세 조회
+	@Override
+	public User viewjpaUser(User user) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
+		// 엔티티 매니저
+		EntityManager em = emf.createEntityManager();
+		// 트랜잭션 획득
+		EntityTransaction tx = em.getTransaction();	
+		try {
+			tx.begin();
+			List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		emf.close();
+		return user;
+	}
+
+	// jpa 회원 정보 수정
+	@Override
+	public void updatejpaUser(User user) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
+		// 엔티티 매니저
+		EntityManager em = emf.createEntityManager();
+		// 트랜잭션 획득
+		EntityTransaction tx = em.getTransaction();	
+		try {
+			tx.begin();
+			em.find(User.class, user.getId()).setPw(user.getPw());
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		emf.close();
+	}
+
+	// jpa 회원 정보 삭제
+	@Override
+	public void deletejpaUser(User user) {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
+		// 엔티티 매니저
+		EntityManager em = emf.createEntityManager();
+		// 트랜잭션 획득
+		EntityTransaction tx = em.getTransaction();	
+		try {
+			tx.begin();
+			em.remove(em.find(User.class, user.getId()));
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		emf.close();
 	}
 }

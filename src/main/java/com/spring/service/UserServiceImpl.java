@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import com.spring.dao.UserDAOImpl;
+import com.spring.vo.User;
 import com.spring.vo.UserVO;
 
 @Service
@@ -95,5 +96,29 @@ public class UserServiceImpl implements UserService {
 			str = "idno";
 		}
 		return str;
+	}
+
+	// jpa 회원 가입
+	@Override
+	public void insertjpaUser(User user) {
+		userdao.insertjpaUser(user);
+	}
+
+	// jpa 회원 정보 상세 조회
+	@Override
+	public User viewjpaUser(User user) {
+		return userdao.viewjpaUser(user);
+	}
+
+	// jpa 회원 정보 수정
+	@Override
+	public void updatejpaUser(User user) {
+		userdao.updatejpaUser(user);
+	}
+
+	// jpa 회원 정보 삭제
+	@Override
+	public void deletejpaUser(User user) {
+		userdao.deletejpaUser(user);
 	}
 }

@@ -26,6 +26,12 @@ public class BoardController {
 	CommentService commentservice;
 
 	// 게시판 홈 화면 이동
+	@RequestMapping("/board/view/user")
+	public String viewUser() {
+		return "board/board_user";
+	}
+
+	// 게시판 홈 화면 이동
 	@RequestMapping("/board/view/home")
 	public String viewHome() {
 		return "board/board_home";

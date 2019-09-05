@@ -4,6 +4,12 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
     version="2.1">
+     <!-- Transaction 
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+      <property name="dataSource" ref="dataSource" />
+      <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>    
+    --> 
     <persistence-unit name="userdb">
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb?autoReconnect=true&amp;useSSL=false" />
@@ -13,5 +19,11 @@
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
         </properties>
-    </persistence-unit>   
+        
+    </persistence-unit>
+    
+    
+   
+
+	   
 </persistence>

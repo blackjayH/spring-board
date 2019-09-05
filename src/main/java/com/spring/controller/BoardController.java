@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -72,6 +73,7 @@ public class BoardController {
 
 	// 게시판 게시물 상세 보기 이동
 	@RequestMapping("/board/view/detail")
+	@Transactional
 	public String viewDetail(@RequestParam int bbsID, Model model) {
 		boardservice.updateClick(bbsID); // 조회수 업데이트
 		model.addAttribute("boardvo", boardservice.viewBoard(bbsID));

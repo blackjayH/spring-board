@@ -43,17 +43,13 @@
 			name="sqlSessionFactory" />
 	</bean>
 
-	<!-- Transaction -->
+	<!-- Transaction -->  
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<tx:annotation-driven />
-
-
+	
 	<!-- JUnit 테스트	--> 
 	<context:component-scan base-package="com.spring" /> 
-
-	
-
 </beans>

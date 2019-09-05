@@ -18,7 +18,13 @@ import com.spring.vo.UserVO;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
-	
+
+	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
+	// 엔티티 매니저
+
+	EntityManager em = emf.createEntityManager();
+	// 트랜잭션 획득
+	EntityTransaction tx = em.getTransaction();
 
 	@Inject
 	private SqlSession sqlSession;
@@ -89,11 +95,6 @@ public class UserDAOImpl implements UserDAO {
 	// jpa 회원 가입
 	@Override
 	public void insertjpaUser(User user) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
-		// 엔티티 매니저
-		EntityManager em = emf.createEntityManager();
-		// 트랜잭션 획득
-		EntityTransaction tx = em.getTransaction();	
 		try {
 			tx.begin();
 			em.persist(user);
@@ -109,15 +110,10 @@ public class UserDAOImpl implements UserDAO {
 	// jpa 회원 정보 상세 조회
 	@Override
 	public User viewjpaUser(User user) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
-		// 엔티티 매니저
-		EntityManager em = emf.createEntityManager();
-		// 트랜잭션 획득
-		EntityTransaction tx = em.getTransaction();	
 		try {
-			tx.begin();
+			// tx.begin();
 			List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
-			tx.commit();
+			// tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -130,15 +126,10 @@ public class UserDAOImpl implements UserDAO {
 	// jpa 회원 정보 수정
 	@Override
 	public void updatejpaUser(User user) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
-		// 엔티티 매니저
-		EntityManager em = emf.createEntityManager();
-		// 트랜잭션 획득
-		EntityTransaction tx = em.getTransaction();	
 		try {
-			tx.begin();
+			// tx.begin();
 			em.find(User.class, user.getId()).setPw(user.getPw());
-			tx.commit();
+			// tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -150,15 +141,10 @@ public class UserDAOImpl implements UserDAO {
 	// jpa 회원 정보 삭제
 	@Override
 	public void deletejpaUser(User user) {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("userdb");
-		// 엔티티 매니저
-		EntityManager em = emf.createEntityManager();
-		// 트랜잭션 획득
-		EntityTransaction tx = em.getTransaction();	
 		try {
-			tx.begin();
+			// tx.begin();
 			em.remove(em.find(User.class, user.getId()));
-			tx.commit();
+			// tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

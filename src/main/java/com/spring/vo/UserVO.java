@@ -1,8 +1,9 @@
 package com.spring.vo;
 
-public class UserVO { // 유저 
+public class UserVO { // 유저
 	private String id;
 	private String pw;
+	private int warning;
 
 	public String getId() {
 		return id;
@@ -20,8 +21,16 @@ public class UserVO { // 유저
 		this.pw = pw;
 	}
 
+	public int getWarning() {
+		return warning;
+	}
+
+	public void setWarning(int warning) {
+		this.warning = warning;
+	}
+
 	@Override
 	public String toString() {
-		return "UserVO [id=" + id + ", pw=" + pw + "]";
+		return "UserVO [id=" + id + ", pw=" + pw + ", warning=" + warning + "]";
 	}
 }

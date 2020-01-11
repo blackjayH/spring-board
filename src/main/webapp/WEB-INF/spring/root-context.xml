@@ -12,7 +12,6 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	<!-- Root Context: defines shared resources visible to all other web components -->
 
 	<!-- MySQL JDBC dataSource -->
 	<bean id="dataSource"
@@ -32,7 +31,6 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations"
 			value="classpath:mappers/**/*Mapper.xml" />
-
 	</bean>
 
 	<!-- sqlSession -->
@@ -43,7 +41,7 @@
 			name="sqlSessionFactory" />
 	</bean>
 
-	<!-- Transaction -->  
+	<!-- Transaction 2종류 class 선언시 -->  
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />

@@ -21,7 +21,7 @@ public class CommonErrorController {
 		mv.setViewName("error/errorPage");
 		String msg = (String) request.getAttribute("javax.servlet.error.message");
 
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("STATUS_CODE", request.getAttribute("javax.servlet.error.status_code"));
 		map.put("REQUEST_URI", request.getAttribute("javax.servlet.error.request_uri"));
 		map.put("EXCEPTION_TYPE", request.getAttribute("javax.servlet.error.exception_type"));

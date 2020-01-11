@@ -17,11 +17,6 @@ public class DaoTest {
 	private UserDAO userdao;
 
 	@Test
-	public void testTime() throws Exception {
-		System.out.println(userdao.getTime());
-	}
-
-	@Test
 	public void testInsertUser() throws Exception {
 		UserVO uservo = new UserVO();
 		uservo.setId("aaa");

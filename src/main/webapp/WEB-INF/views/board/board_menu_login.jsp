@@ -19,8 +19,9 @@
 			data-toggle="dropdown" role="button" aria-haspopup="true"
 			aria-expanded="false">${userID}<span class="caret"></span></a>
 			<ul class="dropdown-menu">
-				<li><a href="${path}/user/action/logout">로그아웃</a></li>
+				<li><a href="${path}/board/view/check">정보수정</a></li>
 				<li><a href="${path}/board/view/withdrawal">회원탈퇴</a></li>
+				<li><a href="${path}/logout">로그아웃</a></li>
 			</ul></li>
 	</ul>
 </body>

@@ -17,35 +17,35 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>Spring Framework 게시판 만들기</title>
+<title>Baseball Talk</title>
+
 <script
 		src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
-	// ID 중복체크 액션 POST
+	//ID 중복 체크 여부 변수
+	var flag = false;
+	// ID 중복체크 액션 GET
 	$(document).ready(function() {
 		$("#btnCheck").click(function() {
-			if ($('#id').val().length < 1) {
+			if ($('#id').val().length < 1) 
 				alert('아이디 미입력');
-			} else {
-				var form = {
-					id : $('#id').val()
-				};
-			}
+			var id = $('#id').val();
 			$.ajax({
-				type : "POST",
-				data : form,
-				url : "${path}/user/action/checkid",
-				success : function(data) {
-					if (data == "no")
-						alert("중복된 아이디입니다.\n사용불가");
-					else {
-						alert("사용가능");
-						var con_test = confirm("이 아이디를 사용하시겠습니까?");
-						if (con_test == true) {
+				type : "GET",
+				url : "${path}/user/" + id,
+				success : function(response) {
+					if (response.result == true) {
+						var confirmid = confirm("이 아이디를 사용하시겠습니까?");
+						if (confirmid == true) {
 							alert("회원가입 버튼을 눌러주세요.")
+							flag = true;
 						} else {
-							alert("다른 id를 입력해주세요.")
+							alert("사용하실 다른 id를 입력해주세요.")
+							flag = false;
 						}
+					} else {
+						alert('이미 존재하는 아이디입니다.\n 사용하실 다른 id를 입력해주세요.');
+						flag = false;
 					}
 				},
 				error : function(error) {
@@ -54,29 +54,32 @@
 			});
 		});
 	});
-	// 회원가입 액션 POST
+	// 회원가입 
 	$(document).ready(function() {
 		$("#btnSubmit").click(function() {
-			if ($('#id').val().length < 1)
-				alert('아이디 미입력');
+			if (!flag)
+				alert('중복 체크');
 			else if ($('#pw').val().length < 1)
 				alert('페스워드 미입력');
 			else if ($('#pw').val() != $('#pw2').val())
 				alert('페스워드 확인해주세요');
 			else {
-				var form = {
-					id : $('#id').val(),
-					pw : $('#pw').val()
-				};
+				var id = $('#id').val();
+				var pw = $('#pw').val();
 				$.ajax({
 					type : "POST",
-					data : form,
-					url : "${path}/user/action/join",
-					success : function(data) {
-						if (data == "yes") {
-							alert("가입완료. 로그인 화면으로 이동합니다.");
+					data : JSON.stringify({
+						id : id,
+						pw : pw
+					}),
+					url : "${path}/user",
+					contentType : 'application/json;charset=utf-8',
+					dataType : 'json',
+					success : function(response) {
+						if (response.result == true)
 							location.href = '${path}/board/view/login'
-						}
+						else
+							alert('회원가입 실패');
 					},
 					error : function(error) {
 						alert(error);
@@ -105,12 +108,16 @@
 			<li><a href="${path}/board/view/home">메인</a>
 			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
 			<li><a href="${path}/board/view/join">회원가입</a>
+			<c:if test="${userID eq 'admin'}">
+			<li><a href="${path}/board/view/user">유저관리</a>
+		</c:if>
+			
 		</ul>
 		<c:if test="${userID eq null}">
-			<%@ include file="board_menu_logout.jsp"%>
+			<c:import url="board_menu_logout.jsp" charEncoding="UTF-8"></c:import>
 		</c:if>
 		<c:if test="${userID ne null}">
-			<%@ include file="board_menu_login.jsp"%>
+			<c:import url="board_menu_login.jsp" charEncoding="UTF-8"></c:import>
 		</c:if>
 	</div>
 	</nav>

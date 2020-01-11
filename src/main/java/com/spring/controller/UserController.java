@@ -3,100 +3,87 @@ package com.spring.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.service.UserService;
-import com.spring.vo.User;
 import com.spring.vo.UserVO;
 
-@Controller
+@RestController
 public class UserController {
-	@Inject
+	@Autowired
 	UserService userservice;
-	
-	// 회원 가입시 아이디 중복 확인 액션
-	@RequestMapping(value = "/user/action/checkid", method = RequestMethod.POST)
-	@ResponseBody
-	public String checkId(String id) {
-		String str;
-		boolean tf = userservice.checkId(id);
-		if (tf)
-			str = "no";
-		else
-			str = "yes";
-		return str;
-	}
 
-	// 회원 가입 액션
-	@RequestMapping(value = "/user/action/join", method = RequestMethod.POST)
-	@ResponseBody
-	public String addUser(@ModelAttribute UserVO uservo) {
+	// 회원 정보 등록
+	@RequestMapping(value = "/user", method = RequestMethod.POST, headers = { "Content-type=application/json" })
+	public Map<String, Object> insertUser(@RequestBody UserVO uservo) {
+		Map<String, Object> result = new HashMap<String, Object>();
 		userservice.insertUser(uservo);
-		return "yes";
+		result.put("result", Boolean.TRUE);
+		return result;
 	}
 
-	// 로그인 액션(ID / PW 확인)
-	@RequestMapping(value = "/user/action/login", method = RequestMethod.POST)
-	@ResponseBody
-	public String checkIdPw(@ModelAttribute UserVO uservo, HttpSession session) {
-		String str = userservice.loginUser(uservo, session);
-		return str;
+	// 아이디 중복 체크(회원가입)
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+	public Map<String, Object> checkId(@PathVariable String id) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		if (userservice.checkId(id))
+			result.put("result", Boolean.TRUE);
+		else
+			result.put("result", Boolean.FALSE);
+		return result;
 	}
 
-	// 로그 아웃 액션
-	@RequestMapping("/user/action/logout")
-	public String logoutUser(HttpSession session) {
-		userservice.logoutUser(session);
-		return "redirect:/board/view/home";
+	// 회원 정보 수정
+	@RequestMapping(value = "/user", method = RequestMethod.PUT, headers = { "Content-type=application/json" })
+	public Map<String, Object> updateUser(@RequestBody UserVO uservo) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		userservice.updateUser(uservo);
+		result.put("result", Boolean.TRUE);
+		return result;
 	}
 
-	// 회원 탈퇴 액션
-	@RequestMapping("/user/action/withdrawal")
-	@ResponseBody
-	public String userDelete(@ModelAttribute UserVO uservo, HttpSession session) {
-		String str = userservice.checkUser(uservo);
-		if (str.equals("yes")) { // 탈퇴 성공
-			userservice.logoutUser(session);
-			userservice.deleteUser(uservo);
+	// 회원 정보 삭제
+	@RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+	public Map<String, Object> deleteUser(@PathVariable String id, HttpSession session) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		userservice.deleteUser(id, session);
+		result.put("result", Boolean.TRUE);
+		return result;
+	}
+
+	// 회원 로그인
+	@RequestMapping(value = "/login", method = RequestMethod.POST, headers = { "Content-type=application/json" })
+	public Map<String, Object> loginUser(@RequestBody UserVO uservo, HttpSession session) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		if (userservice.checkId(uservo.getId())) { // 0
+			result.put("result", Boolean.FALSE);
+			result.put("message", "없는 ID");
+		} else {
+			if (userservice.loginUser(uservo)) {
+				session.setAttribute("userID", uservo.getId());
+				result.put("result", Boolean.TRUE); // 로그인 성공
+			} else {
+				result.put("result", Boolean.FALSE); // 로그인 실패
+				result.put("message", "비밀번호 체크");
+			}
 		}
-		return str;
-	}
-
-	// JPA 테스트 add
-	@RequestMapping("/user/jpa/add")
-	@ResponseBody
-	@Transactional
-	public Map<String, Object> AddjpaUser(@ModelAttribute User user) {
-		userservice.insertjpaUser(user);
-		Map<String, Object> result = new HashMap<>();
-		result.put("result", Boolean.TRUE);
 		return result;
 	}
 
-	// JPA 테스트 update
-	@RequestMapping("/user/jpa/update")
-	@ResponseBody
-	public Map<String, Object> UpdatejpaUser(@ModelAttribute User user) {
-		userservice.updatejpaUser(user);
-		Map<String, Object> result = new HashMap<>();
-		result.put("result", Boolean.TRUE);
-		return result;
-	}
-
-	// JPA 테스트 delete
-	@RequestMapping("/user/jpa/delete")
-	@ResponseBody
-	public Map<String, Object> DeletejpaUser(@ModelAttribute User user) {
-		userservice.deletejpaUser(user);
-		Map<String, Object> result = new HashMap<>();
+	// 회원 정보 확인
+	@RequestMapping(value = "/check", method = RequestMethod.POST, headers = { "Content-type=application/json" })
+	public Map<String, Object> checkUser(@RequestBody UserVO uservo) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		userservice.checkUser(uservo);
 		result.put("result", Boolean.TRUE);
 		return result;
 	}

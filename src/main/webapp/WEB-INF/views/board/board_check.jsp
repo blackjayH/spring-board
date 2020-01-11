@@ -21,15 +21,13 @@
 
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
-	//로그인
+	// 체크
 	$(document).ready(function() {
-		$("#btnLogin").click(function() {
-			if ($('#id').val().length < 1)
-				alert('아이디 미입력');
-			else if ($('#pw').val().length < 1)
+		$("#btnCheck").click(function() {
+			if ($('#pw').val().length < 1)
 				alert('페스워드 미입력');
 			else {
-				var id = $('#id').val();
+				var id = '<c:out value="${userID}"/>';
 				var pw = $('#pw').val();
 				$.ajax({
 					type : "POST",
@@ -37,27 +35,20 @@
 						id : id,
 						pw : pw
 					}),
-					url : "${path}/login",
+					url : "${path}/check",
 					contentType : 'application/json;charset=utf-8',
 					dataType : 'json',
 					success : function(response) {
 						if (response.result == true)
-							location.href = '${path}/board/view/home'
+							location.href = '${path}/board/view/user'
 						if (response.result == false)
-							alert(response.message);
+							alert('비밀번호를 확인해주세요');
 					},
 					error : function(error) {
 						alert(error);
 					}
 				});
 			}
-		});
-	});
-	
-	// 회원 가입으로 이동
-	$(document).ready(function() {
-		$("#btnJoin").click(function() {
-			location.href = '${path}/board/view/join';
 		});
 	});
 </script>
@@ -97,25 +88,15 @@
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
 			<div class="jumbotron" style="padding-top: 20px;">
-				<form name="form2" method="post">
-					<h3 style="text-align: center;">로그인 화면</h3>
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="아이디" id="id"
-							name="id" maxlength="20">
-					</div>
-					<div class="form-group">
-						<input type="password" class="form-control" placeholder="비밀번호"
-							id="pw" name="pw" maxlength="20">
-					</div>
-					<div class="form-group">
-						<input type="button" id="btnLogin"
-							class="btn btn-primary form-control" value="로그인">
-					</div>
-					<div class="form-group">
-						<input type="button" id="btnJoin"
-							class="btn btn-primary form-control" value="회원가입">
-					</div>
-				</form>
+				<h3 style="text-align: center;">유저 정보 확인</h3>
+				<div class="form-group">
+					<input type="password" class="form-control" placeholder="비밀번호"
+						id="pw" name="pw" maxlength="20">
+				</div>
+				<div class="form-group">
+					<input type="button" id="btnCheck"
+						class="btn btn-primary form-control" value="회원정보 수정">
+				</div>
 			</div>
 		</div>
 		<div class="col-lg-4"></div>

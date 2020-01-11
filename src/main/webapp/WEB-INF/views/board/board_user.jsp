@@ -17,74 +17,39 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>Spring Framework 게시판 만들기</title>
+<title>Baseball Talk</title>
+
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
-	// 회원가입 액션 POST
-	$(document).ready(function() {
-		$("#btnSubmit").click(function() {
-			var form = {
-				id : $('#id').val(),
-				pw : $('#pw').val()
-			};
-			$.ajax({
-				type : "POST",
-				data : form,
-				url : "${path}/user/jpa/add",
-				success : function(data) {
-					if (data.result == true) {
-						location.href = '${path}/board/view/home'
-					}
-					
-				},
-				error : function(error) {
-					alert(error);
-				}
-			});
-		});
-	});
-	// 회원가입 액션 POST
+	//로그인
 	$(document).ready(function() {
 		$("#btnUpdate").click(function() {
-			var form = {
-				id : $('#id').val(),
-				pw : $('#pw').val()
-			};
-			$.ajax({
-				type : "POST",
-				data : form,
-				url : "${path}/user/jpa/update",
-				success : function(data) {
-					if (data.result == true) {
-						location.href = '${path}/board/view/home'
+			if ($('#pw').val().length < 1)
+				alert('페스워드 미입력');
+			else if ($('#pw').val() != $('#pw2').val())
+				alert('페스워드 확인해주세요');
+			else {
+				var id = '<c:out value="${userID}"/>';
+				//alert(id);
+				var pw = $('#pw').val();
+				$.ajax({
+					type : "PUT",
+					data : JSON.stringify({
+						id : id,
+						pw : pw
+					}),
+					url : "${path}/user",
+					contentType : 'application/json;charset=utf-8',
+					dataType : 'json',
+					success : function(response) {
+						if (response.result == true)
+							location.href = '${path}/board/view/home'
+					},
+					error : function(error) {
+						alert(error);
 					}
-				},
-				error : function(error) {
-					alert(error);
-				}
-			});
-		});
-	});
-	// 회원가입 액션 POST
-	$(document).ready(function() {
-		$("#btnDelete").click(function() {
-			var form = {
-				id : $('#id').val(),
-				pw : $('#pw').val()
-			};
-			$.ajax({
-				type : "POST",
-				data : form,
-				url : "${path}/user/jpa/delete",
-				success : function(data) {
-					if (data.result == true) {
-						location.href = '${path}/board/view/home'
-					}
-				},
-				error : function(error) {
-					alert(error);
-				}
-			});
+				});
+			}
 		});
 	});
 </script>
@@ -106,13 +71,16 @@
 		<ul class="nav navbar-nav">
 			<li><a href="${path}/board/view/home">메인</a>
 			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
-			<li><a href="${path}/board/view/join">회원가입</a>
+			<li><a href="${path}/board/view/join">회원가입</a> <c:if
+					test="${userID eq 'admin'}">
+					<li><a href="${path}/board/view/check">유저관리</a>
+				</c:if>
 		</ul>
 		<c:if test="${userID eq null}">
-			<%@ include file="board_menu_logout.jsp"%>
+			<c:import url="board_menu_logout.jsp" charEncoding="UTF-8"></c:import>
 		</c:if>
 		<c:if test="${userID ne null}">
-			<%@ include file="board_menu_login.jsp"%>
+			<c:import url="board_menu_login.jsp" charEncoding="UTF-8"></c:import>
 		</c:if>
 	</div>
 	</nav>
@@ -121,11 +89,7 @@
 		<div class="col-lg-4"></div>
 		<div class="col-lg-4">
 			<div class="jumbotron" style="padding-top: 20px;">
-				<h3 style="text-align: center;">유저 JPA 화면</h3>
-				<div class="form-group">
-					<input type="text" class="form-control" placeholder="아이디" id="id"
-						name="id" maxlength="20">
-				</div>
+				<h3 style="text-align: center;">유저 정보 수정 화면</h3>
 				<div class="form-group">
 					<input type="password" class="form-control" placeholder="비밀번호"
 						id="pw" name="pw" maxlength="20">
@@ -135,20 +99,8 @@
 						id="pw2" name="pw2" maxlength="20">
 				</div>
 				<div class="form-group">
-					<input type="button" id="btnCheck"
-						class="btn btn-primary form-control" value="아이디 중복 체크">
-				</div>
-				<div class="form-group">
-					<input type="button" id="btnSubmit"
-						class="btn btn-primary form-control" value="회원가입">
-				</div>
-				<div class="form-group">
 					<input type="button" id="btnUpdate"
-						class="btn btn-primary form-control" value="수정">
-				</div>
-				<div class="form-group">
-					<input type="button" id="btnDelete"
-						class="btn btn-primary form-control" value="회원탈퇴">
+						class="btn btn-primary form-control" value="정보수정">
 				</div>
 			</div>
 		</div>

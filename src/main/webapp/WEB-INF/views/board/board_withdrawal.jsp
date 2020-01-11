@@ -17,36 +17,32 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>Spring Framework 게시판 만들기</title>
+<title>Baseball Talk</title>
+
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
-	// 회원탈퇴 액션 POST
+	// 삭제
 	$(document).ready(function() {
 		$("#btnWithdrawal").click(function() {
-			if ($('#id').val().length < 1)
-				alert('아이디 미입력');
-			else if ($('#pw').val().length < 1)
+			if ($('#pw').val().length < 1)
 				alert('페스워드 미입력');
 			else {
-				var form = {
-					id : $('#id').val(),
-					pw : $('#pw').val()
-				};
+				var id = '<c:out value="${userID}"/>';
+				var pw = $('#pw').val();
 				$.ajax({
 					type : "POST",
-					data : form,
-					url : "${path}/user/action/withdrawal",
-					success : function(data) {
-						if (data == "pwno")
-							alert("비밀번호 틀림");
-						else if (data == "idno")
-							alert("없는 아이디");
-						else if (data == "yes") {
-							alert("탈퇴 완료. 홈 화면으로 이동합니다.");
-							location.href = '${path}/board/view/home'
-						} 
-						
-	
+					data : JSON.stringify({
+						id : id,
+						pw : pw
+					}),
+					url : "${path}/check",
+					contentType : 'application/json;charset=utf-8',
+					dataType : 'json',
+					success : function(response) {
+						if (response.result == true)
+							deleteUser();
+						if (response.result == false)
+							alert('비밀번호를 확인해주세요');
 					},
 					error : function(error) {
 						alert(error);
@@ -55,6 +51,31 @@
 			}
 		});
 	});
+
+	// 회원정보 삭제 액션 DELETE
+	function deleteUser() {
+		var id = '<c:out value="${userID}"/>';
+		var confirmid = confirm('정말로 아이디를 삭제하시겠습니까?');
+		if (confirmid == false)
+			alert('취소 되었습니다. 홈 화면으로 이동합니다.');
+		else {
+			$.ajax({
+				type : "DELETE",
+				url : "${path}/user/" + id,
+				success : function(response) {
+					if (response.result == true) {
+						alert('삭제하였습니다. 홈화면으로 이동합니다.');
+						location.href = '${path}/board/view/home'
+					} else {
+						alert('삭제 실패하였습니다.');
+					}
+				},
+				error : function(error) {
+					alert(error);
+				}
+			});
+		}
+	}
 </script>
 </head>
 
@@ -74,13 +95,16 @@
 		<ul class="nav navbar-nav">
 			<li><a href="${path}/board/view/home">메인</a>
 			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
-			<li><a href="${path}/board/view/join">회원가입</a>
+			<li><a href="${path}/board/view/join">회원가입</a> <c:if
+					test="${userID eq 'admin'}">
+					<li><a href="${path}/board/view/user">유저관리</a>
+				</c:if>
 		</ul>
 		<c:if test="${userID eq null}">
-			<%@ include file="board_menu_logout.jsp"%>
+			<c:import url="board_menu_logout.jsp" charEncoding="UTF-8"></c:import>
 		</c:if>
 		<c:if test="${userID ne null}">
-			<%@ include file="board_menu_login.jsp"%>
+			<c:import url="board_menu_login.jsp" charEncoding="UTF-8"></c:import>
 		</c:if>
 	</div>
 	</nav>
@@ -92,13 +116,9 @@
 				<form name="form2" method="post" action="${path}/user/action/add">
 					<h3 style="text-align: center;">회원탈퇴 화면</h3>
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="아이디" id="id"
-							name="id" maxlength="20">
-					</div>
-					<div class="form-group">
 						<input type="password" class="form-control" placeholder="비밀번호"
 							id="pw" name="pw" maxlength="20">
-					</div>					
+					</div>
 					<div class="form-group">
 						<input type="button" id="btnWithdrawal"
 							class="btn btn-primary form-control" value="회원탈퇴">

@@ -9,18 +9,10 @@
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
-	<!-- DispatcherServlet Context: defines this servlet's request-processing 
-		infrastructure -->
-
-	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
-		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
-		in the /WEB-INF/views directory -->
 	<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
@@ -28,7 +20,7 @@
 	</beans:bean>
 
 	<context:component-scan
-		base-package="com.spring" />
+		base-package="com.spring.controller" />
 	
 	<!-- aop interface 관련 설정(dao / service 상속시 문제 발생했었음 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
@@ -42,7 +34,8 @@
 			<beans:ref bean="loginInterceptor" />
 		</interceptor>
 	</interceptors>
-	<!-- interceptor session 유저 본인 확인 -->
+	
+	<!-- interceptor session 게시물 작성 유저 본인 여부 확인 -->
 	<beans:bean id="sessionInterceptor"
 		class="com.spring.interceptor.SessionInterceptor" />
 	<interceptors>

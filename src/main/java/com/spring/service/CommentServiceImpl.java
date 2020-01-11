@@ -2,18 +2,16 @@ package com.spring.service;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.dao.CommentDAOImpl;
-import com.spring.vo.BoardVO;
+import com.spring.dao.CommentDAO;
 import com.spring.vo.CommentVO;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-	@Inject
-	CommentDAOImpl commentdao;
+	@Autowired
+	CommentDAO commentdao;
 
 	// 00. 시간 입력
 	@Override

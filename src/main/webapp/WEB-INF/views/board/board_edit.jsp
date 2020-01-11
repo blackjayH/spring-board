@@ -8,6 +8,7 @@
 <!-- context 경로 -->
 <c:set var="path" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -16,7 +17,8 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>Spring Framework 게시판 만들기</title>
+<title>Baseball Talk</title>
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
@@ -87,12 +89,16 @@
 			<li><a href="${path}/board/view/home">메인</a></li>
 			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
 			<li><a href="${path}/board/view/join">회원가입</a>
+			<c:if test="${userID eq 'admin'}">
+			<li><a href="${path}/board/view/user">유저관리</a>
+		</c:if>
+			
 		</ul>
 		<c:if test="${userID eq null}">
-			<%@ include file="board_menu_logout.jsp"%>
+			<c:import url="board_menu_logout.jsp" charEncoding="UTF-8"></c:import>
 		</c:if>
 		<c:if test="${userID ne null}">
-			<%@ include file="board_menu_login.jsp"%>
+			<c:import url="board_menu_login.jsp" charEncoding="UTF-8"></c:import>
 		</c:if>
 	</div>
 	</nav>

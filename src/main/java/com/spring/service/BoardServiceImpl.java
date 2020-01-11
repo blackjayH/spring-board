@@ -2,18 +2,17 @@ package com.spring.service;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.dao.BoardDAOImpl;
+import com.spring.dao.BoardDAO;
 import com.spring.vo.BoardVO;
 import com.spring.vo.Paging;
 
 @Service
 public class BoardServiceImpl implements BoardService {
-	@Inject
-	BoardDAOImpl boarddao;
+	@Autowired
+	BoardDAO boarddao;
 
 	// 00. 전체 게시글 조회(미사용)
 	@Override

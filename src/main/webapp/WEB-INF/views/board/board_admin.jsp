@@ -21,45 +21,35 @@
 
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
-	//로그인
-	$(document).ready(function() {
-		$("#btnLogin").click(function() {
-			if ($('#id').val().length < 1)
-				alert('아이디 미입력');
-			else if ($('#pw').val().length < 1)
-				alert('페스워드 미입력');
-			else {
-				var id = $('#id').val();
-				var pw = $('#pw').val();
-				$.ajax({
-					type : "POST",
-					data : JSON.stringify({
-						id : id,
-						pw : pw
-					}),
-					url : "${path}/login",
-					contentType : 'application/json;charset=utf-8',
-					dataType : 'json',
-					success : function(response) {
-						if (response.result == true)
-							location.href = '${path}/board/view/home'
-						if (response.result == false)
-							alert(response.message);
-					},
-					error : function(error) {
-						alert(error);
+	function deleteuser(id) {
+		var id = id;
+		var userid = '<c:out value="${userID}"/>'
+		if (id == 'admin')
+			alert('admin을 삭제할 수 없습니다.');
+		else {
+			$.ajax({
+				type : "DELETE",
+				url : "${path}/user/" + id,
+				success : function(response) {
+					if (response.result == true) {
+						if (userid == 'admin'){
+							alert('관리자 권한으로 삭제했습니다.');
+							location.href = '${path}/board/view/admin'
+						}
+						else {
+							alert('삭제하였습니다. 홈화면으로 이동합니다.');
+							location.href = '${path}/board/view/home'	
+						}
+					} else {
+						alert('삭제 실패하였습니다.');
 					}
-				});
-			}
-		});
-	});
-	
-	// 회원 가입으로 이동
-	$(document).ready(function() {
-		$("#btnJoin").click(function() {
-			location.href = '${path}/board/view/join';
-		});
-	});
+				},
+				error : function(error) {
+					alert(error);
+				}
+			});
+		}
+	}
 </script>
 </head>
 
@@ -81,7 +71,7 @@
 			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
 			<li><a href="${path}/board/view/join">회원가입</a> <c:if
 					test="${userID eq 'admin'}">
-					<li><a href="${path}/board/view/user">유저관리</a>
+					<li><a href="${path}/board/view/check">유저관리</a>
 				</c:if>
 		</ul>
 		<c:if test="${userID eq null}">
@@ -94,31 +84,27 @@
 	</nav>
 
 	<div class="container">
-		<div class="col-lg-4"></div>
-		<div class="col-lg-4">
-			<div class="jumbotron" style="padding-top: 20px;">
-				<form name="form2" method="post">
-					<h3 style="text-align: center;">로그인 화면</h3>
-					<div class="form-group">
-						<input type="text" class="form-control" placeholder="아이디" id="id"
-							name="id" maxlength="20">
-					</div>
-					<div class="form-group">
-						<input type="password" class="form-control" placeholder="비밀번호"
-							id="pw" name="pw" maxlength="20">
-					</div>
-					<div class="form-group">
-						<input type="button" id="btnLogin"
-							class="btn btn-primary form-control" value="로그인">
-					</div>
-					<div class="form-group">
-						<input type="button" id="btnJoin"
-							class="btn btn-primary form-control" value="회원가입">
-					</div>
-				</form>
-			</div>
+		<div class="row">
+			<table class="table table-striped"
+				style="text-align: center; border: 1px;">
+				<br>
+				<thead>
+					<tr>
+						<th style="background-color: #eeeeee; text-align: center;">유저명
+						</th>
+						<th style="background-color: #eeeeee; text-align: center;">버튼</th>
+					</tr>
+				</thead>
+				<c:forEach var="row" items="${list}">
+					<tr>
+						<td id="id" name="id">${row.id}</td>
+						<td width="15"><input type="button" id="btnDelete"
+							class="btn btn-primary btn-arraw-right"
+							onClick="javascript:deleteuser('${row.id}');" value="삭제"></td>
+					</tr>
+				</c:forEach>
+			</table>
 		</div>
-		<div class="col-lg-4"></div>
 	</div>
 
 	<script src="${path}/resources/js/bootstrap.min.js"></script>

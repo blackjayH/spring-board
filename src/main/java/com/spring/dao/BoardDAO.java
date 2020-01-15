@@ -7,7 +7,7 @@ import com.spring.vo.Paging;
 
 public interface BoardDAO {
 	// 00. 전체 게시글 조회(미사용)
-	public List<BoardVO> listAll();
+	//public List<BoardVO> listAll();
 
 	// 01. 페이지별 게시글 조회(메인)
 	public List<BoardVO> listPage(Paging paging);

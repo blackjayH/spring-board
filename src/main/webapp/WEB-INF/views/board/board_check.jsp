@@ -17,11 +17,10 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>Baseball Talk</title>
 
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
-	// 체크
+	// 유저 체크(로그인과 유사)
 	$(document).ready(function() {
 		$("#btnCheck").click(function() {
 			if ($('#pw').val().length < 1)
@@ -40,7 +39,7 @@
 					dataType : 'json',
 					success : function(response) {
 						if (response.result == true)
-							location.href = '${path}/board/view/user'
+							window.location.replace('${path}/board/view/user')
 						if (response.result == false)
 							alert('비밀번호를 확인해주세요');
 					},
@@ -56,31 +55,8 @@
 
 <body>
 	<nav class="navbar navbar-default">
-	<div class="naver-header">
-		<button type="button" class="navbar-toggle collapsed"
-			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-			aria-expanded="false">
-			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-				class="icon-bar"></span>
-		</button>
-		<a class="navbar-brand" href="${path}/board/view/home">Spring
-			Framework 게시판 만들기</a>
-	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		<ul class="nav navbar-nav">
-			<li><a href="${path}/board/view/home">메인</a>
-			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
-			<li><a href="${path}/board/view/join">회원가입</a> <c:if
-					test="${userID eq 'admin'}">
-					<li><a href="${path}/board/view/user">유저관리</a>
-				</c:if>
-		</ul>
-		<c:if test="${userID eq null}">
-			<c:import url="board_menu_logout.jsp" charEncoding="UTF-8"></c:import>
-		</c:if>
-		<c:if test="${userID ne null}">
-			<c:import url="board_menu_login.jsp" charEncoding="UTF-8"></c:import>
-		</c:if>
+		<c:import url="board_menu_left.jsp" charEncoding="UTF-8"></c:import>
 	</div>
 	</nav>
 

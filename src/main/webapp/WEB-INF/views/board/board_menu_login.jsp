@@ -22,7 +22,8 @@
 				<li><a href="${path}/board/view/check">정보수정</a></li>
 				<li><a href="${path}/board/view/withdrawal">회원탈퇴</a></li>
 				<li><a href="${path}/logout">로그아웃</a></li>
-			</ul></li>
+			</ul>
+		</li>
 	</ul>
 </body>
 </html>

@@ -15,10 +15,10 @@ public class BoardServiceImpl implements BoardService {
 	BoardDAO boarddao;
 
 	// 00. 전체 게시글 조회(미사용)
-	@Override
-	public List<BoardVO> listAll() {
-		return boarddao.listAll();
-	}
+	//@Override
+	//public List<BoardVO> listAll() {
+	//	return boarddao.listAll();
+	//}
 
 	// 01. 페이지별 게시글 조회(메인)
 	@Override
@@ -51,10 +51,10 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	// 06. 게시물 작성 시간 등록
-	@Override
-	public String getTime() {
-		return boarddao.getTime();
-	}
+	//@Override
+	//public String getTime() {
+		//return boarddao.getTime();
+	//}
 
 	// 07. 회원 게시글 개수 조회(게시판 메인)
 	@Override

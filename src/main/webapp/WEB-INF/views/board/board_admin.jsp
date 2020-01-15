@@ -17,8 +17,7 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>Baseball Talk</title>
-
+	
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
 	function deleteuser(id) {
@@ -32,13 +31,12 @@
 				url : "${path}/user/" + id,
 				success : function(response) {
 					if (response.result == true) {
-						if (userid == 'admin'){
+						if (userid == 'admin') {
 							alert('관리자 권한으로 삭제했습니다.');
-							location.href = '${path}/board/view/admin'
-						}
-						else {
+							window.location.replace('${path}/board/view/admin')
+						} else {
 							alert('삭제하였습니다. 홈화면으로 이동합니다.');
-							location.href = '${path}/board/view/home'	
+							window.location.replace('${path}/board/view/home')
 						}
 					} else {
 						alert('삭제 실패하였습니다.');
@@ -55,31 +53,8 @@
 
 <body>
 	<nav class="navbar navbar-default">
-	<div class="naver-header">
-		<button type="button" class="navbar-toggle collapsed"
-			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-			aria-expanded="false">
-			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-				class="icon-bar"></span>
-		</button>
-		<a class="navbar-brand" href="${path}/board/view/home">Spring
-			Framework 게시판 만들기</a>
-	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		<ul class="nav navbar-nav">
-			<li><a href="${path}/board/view/home">메인</a>
-			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
-			<li><a href="${path}/board/view/join">회원가입</a> <c:if
-					test="${userID eq 'admin'}">
-					<li><a href="${path}/board/view/check">유저관리</a>
-				</c:if>
-		</ul>
-		<c:if test="${userID eq null}">
-			<c:import url="board_menu_logout.jsp" charEncoding="UTF-8"></c:import>
-		</c:if>
-		<c:if test="${userID ne null}">
-			<c:import url="board_menu_login.jsp" charEncoding="UTF-8"></c:import>
-		</c:if>
+		<c:import url="board_menu_left.jsp" charEncoding="UTF-8"></c:import>
 	</div>
 	</nav>
 

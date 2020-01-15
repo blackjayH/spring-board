@@ -2,18 +2,20 @@ package com.spring.controller;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.service.BoardService;
 import com.spring.service.CommentService;
+import com.spring.service.UserService;
 import com.spring.vo.BoardVO;
 import com.spring.vo.CommentVO;
 import com.spring.vo.Paging;
@@ -26,10 +28,13 @@ public class ViewController {
 	@Autowired
 	CommentService commentservice;
 
+	@Autowired
+	UserService userservice;
+
 	// 메인
 	@RequestMapping("/")
 	public String main() {
-		return "board/board_home";
+		return "board/board_start";
 	}
 
 	// 게시판 홈 화면 이동
@@ -68,7 +73,6 @@ public class ViewController {
 		return "board/board_withdrawal";
 	}
 
-
 	// 게시판 게시물 작성 화면 이동
 	@RequestMapping("/board/view/write")
 	public String viewWrite() {
@@ -100,11 +104,26 @@ public class ViewController {
 		return "board/board_detail";
 	}
 
+	// Restful API 게시물 하나 로드(상세 보기)
+	@RequestMapping(value = "/board/{bbsID}", method = RequestMethod.GET)
+	public String detailBoard(@PathVariable int bbsID, Model model) {
+		boardservice.updateClick(bbsID); // 조회수 업데이트
+		model.addAttribute("boardvo", boardservice.viewBoard(bbsID));
+		// 댓글 전부 불러오기
+		List<CommentVO> commentlist = commentservice.listAll(bbsID);
+		// 댓글 카운트
+		int countcomment = commentservice.getCount(bbsID);
+
+		model.addAttribute("countcomment", countcomment);
+		model.addAttribute("commentlist", commentlist);
+		return "board/board_detail";
+	}
+
 	// 게시판 페이지 이동 수정본 (수정 필요 컨트롤러 단순화)
 	@RequestMapping("/board/view/paging")
 	public String viewPaging(@RequestParam int nowPage, Model model) {
 		int count = boardservice.getCount(); // 전체 게시물의 수
-		int perPage = 2; // 페이지당 게시물 수
+		int perPage = 10; // 페이지당 게시물 수
 		Paging paging = new Paging(nowPage, perPage, count);
 
 		List<BoardVO> list = boardservice.listPage(paging);
@@ -113,6 +132,13 @@ public class ViewController {
 		model.addAttribute("paging", paging);
 
 		return "board/board_main";
+	}
+
+	// 로그 아웃 액션
+	@RequestMapping("/logout")
+	public String logoutUser(HttpSession session) {
+		userservice.logoutUser(session);
+		return "redirect:/board/view/home";
 	}
 
 }

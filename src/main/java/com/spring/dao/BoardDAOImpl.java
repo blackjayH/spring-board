@@ -17,10 +17,10 @@ public class BoardDAOImpl implements BoardDAO {
 	private static final String namespace2 = "com.spring.website.boardMapper";
 
 	// 00. 전체 게시글 조회(미사용)
-	@Override
-	public List<BoardVO> listAll() {
-		return sqlSession.selectList(namespace2 + ".listAll");
-	}
+	//@Override
+	//public List<BoardVO> listAll() {
+	//	return sqlSession.selectList(namespace2 + ".listAll");
+	//}
 
 	// 01. 페이지별 게시글 조회(메인)
 	@Override

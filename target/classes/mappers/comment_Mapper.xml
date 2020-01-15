@@ -47,6 +47,8 @@
 		commentContent=#{commentContent},
 		commentSecret=#{commentSecret}
 		where commentID= #{commentID}
+		and bbsID= #{bbsID}
+		and userID= #{userID}
 	</update>
 
 	<!-- 05. 회원 댓글 삭제 -->

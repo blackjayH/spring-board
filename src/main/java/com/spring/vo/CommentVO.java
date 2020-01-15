@@ -68,7 +68,7 @@ public class CommentVO {
 	@Override
 	public String toString() {
 		return "CommnetVO [bbsID=" + bbsID + ", userID=" + userID + ", commentID=" + commentID + ", commentDate="
-				+ commentDate + ", commnetContent=" + commentContent + ", commentAvailable=" + commentAvailable
+				+ commentDate + ", commentContent=" + commentContent + ", commentAvailable=" + commentAvailable
 				+ ", commentSecret=" + commentSecret + "]";
 	}
 

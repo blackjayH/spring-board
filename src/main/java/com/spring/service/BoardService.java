@@ -7,7 +7,7 @@ import com.spring.vo.Paging;
 
 public interface BoardService {
 	// 00. 전체 게시글 조회(미사용)
-	public List<BoardVO> listAll();
+	//public List<BoardVO> listAll();
 
 	// 01. 페이지별 게시글 조회(메인)
 	public List<BoardVO> listPage(Paging paging);
@@ -25,7 +25,7 @@ public interface BoardService {
 	public void deleteBoard(int bbsID);
 
 	// 06. 게시물 작성 시간 등록
-	public String getTime();
+	//public String getTime();
 
 	// 07. 회원 게시글 개수 조회(게시판 메인)
 	public int getCount();

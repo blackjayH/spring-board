@@ -28,18 +28,17 @@
 		<c:import url="board_menu_left.jsp" charEncoding="UTF-8"></c:import>
 	</div>
 	</nav>
-
+	
 	<div class="container">
 		<div class="jumbotron">
 			<div class="container">
 				<h1>Sabermetrics</h1>
-				<p>
-					<a class="btn btn-primary btn-pull" role="button">about</a>
-				</p>
+				<h3>sports professional blog
+				~ ing ~..</h3>
+				 
 			</div>
 		</div>
 	</div>
-
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

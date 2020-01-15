@@ -17,10 +17,9 @@
 <link rel="stylesheet" href="${path}/resources/css/custorm.css">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<title>Baseball Talk</title>
 
-<script
-		src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<script 
+	src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script>
 	// 편집 버튼 클릭
 	$(document).ready(function() {
@@ -28,21 +27,25 @@
 			location.href = '${path}/board/view/edit?bbsID=${boardvo.bbsID}'
 		});
 	});
-
-	// 댓글 등록
+	
+	// 댓글 등록 POST
 	$(document).ready(function() {
 		$("#btnEnrollcomment").click(function() {
-			var form = {
-				bbsID : "${boardvo.bbsID}",
-				commentContent : $('#commentContent').val()
-			}
+			var bbsID = ${boardvo.bbsID};
+			var commentContent = $('#commentContent').val();	
 			$.ajax({
 				type : "POST",
-				data : form,
-				url : "${path}/comment/action/add",
-				success : function(data) {
-					location.href = '${path}/board/view/detail?bbsID=${boardvo.bbsID}'
-					alert("등록 성공");
+				data : JSON.stringify({
+					bbsID : bbsID,
+					commentContent : commentContent
+				}),
+				url : "${path}/comment",
+				contentType : 'application/json;charset=utf-8',
+				dataType : 'json',
+				success : function(response) {
+					if (response.result == true) {
+						window.location.replace('${path}/board/view/detail?bbsID=${boardvo.bbsID}')	
+					}	
 				},
 				error : function(error) {
 					alert(error);				
@@ -50,42 +53,67 @@
 			})
 		});
 	});
+	
+	// 댓글 수정 PUT
+	function updatecomment(commentID) {
+		var bbsID = ${boardvo.bbsID};
+		var commentID = commentID;
+		var userID = '<c:out value="${userID}"/>';	
+		var commentContent = $('#commentContent').val();	
+		$.ajax({
+			type : "PUT",
+			data : JSON.stringify({
+				bbsID : bbsID,
+				commentID : commentID,
+				userID : userID,
+				commentContent : commentContent
+			}),
+			url : "${path}/comment",
+			contentType : 'application/json;charset=utf-8',
+			dataType : 'json',
+			success : function(response) {
+				if (response.result == true) {
+					window.location.replace('${path}/board/view/detail?bbsID=${boardvo.bbsID}')
+				}
+			},
+			error : function(error) {
+				alert(error);
+			}
+		});	
+	}
+	
+	// 댓글 삭제 DELETE
+	function deletecomment(commentID) {
+		var commentID = commentID;
+		$.ajax({
+			type : "DELETE",
+			url : "${path}/comment/" + commentID,
+			contentType : 'application/json;charset=utf-8',
+			dataType : 'json',
+			success : function(response) {
+				if (response.result == true) {
+					window.location.replace('${path}/board/view/detail?bbsID=${boardvo.bbsID}')
+				}
+			},
+			error : function(error) {
+				alert(error);
+			}
+		});
+	}
+	
 </script>
 </head>
 
 <body>
 	<nav class="navbar navbar-default">
-	<div class="naver-header">
-		<button type="button" class="navbar-toggle collapsed"
-			data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-			aria-expanded="false">
-			<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-				class="icon-bar"></span>
-		</button>
-		<a class="navbar-brand" href="${path}/board/view/home">Spring
-			Framework 게시판 만들기</a>
-	</div>
 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		<ul class="nav navbar-nav">
-			<li><a href="${path}/board/view/home">메인</a></li>
-			<li><a href="${path}/board/view/paging?nowPage=1">게시판</a>
-			<li><a href="${path}/board/view/join">회원가입</a>
-			<c:if test="${userID eq 'admin'}">
-			<li><a href="${path}/board/view/user">유저관리</a>
-		</c:if>
-			
-		</ul>
-		<c:if test="${userID eq null}">
-			<c:import url="board_menu_logout.jsp" charEncoding="UTF-8"></c:import>
-		</c:if>
-		<c:if test="${userID ne null}">
-			<c:import url="board_menu_login.jsp" charEncoding="UTF-8"></c:import>
-		</c:if>
+		<c:import url="board_menu_left.jsp" charEncoding="UTF-8"></c:import>
 	</div>
 	</nav>
+
 	<div class="container">
 		<div class="row">
-			<form method="post" action="${path}">
+			
 				<table class="table table-striped"
 					style="text-align: center; border: 1px;">
 					<thead>
@@ -116,11 +144,13 @@
 					</thead>
 				</table>
 				<input type="button" id="btnEdit" class="btn btn-primary pull-right"
-					value="편집">
+					value="게시물 편집">
 					
+
 				--------------------------------------------------------------------------전체${countcomment}개의
 				댓글이 있습니다.
 				--------------------------------------------------------------------------<br>
+				
 				<table class="table table-striped"
 					style="text-align: center; border: 1px;">
 					<br>
@@ -133,33 +163,33 @@
 						</tr>
 					</thead>
 					<c:forEach var="row" items="${commentlist}">
-					<tr>
-						<td>${row.userID}</td>
-						<td>${row.commentContent}</td>
-						<td>${row.commentDate}</td>					
-						<td>
-						 <div style="height: 40px; overflow:hidden;">
-      						<c:if test="${row.userID == sessionScope.userID}">
-       						<a href="${path}/comment/action/update"
-							class="btn btn-primary btn-arraw-right">수정</a>
-				 			<a href="${path}/comment/action/delete?commentID=${row.commentID}&bbsID=${row.bbsID}"
-							class="btn btn-primary btn-arraw-right">삭제</a>
-							</c:if>
- 					 	</div>
-						</td>					
-					</tr>
+						<tr>
+							<td>${row.userID}</td>
+							<td>${row.commentContent}</td>
+							<td>${row.commentDate}</td>
+							<td>
+								<div style="height: 40px; overflow: hidden;">
+									<c:if test="${row.userID == sessionScope.userID}">
+										<a type="button" id="btnUpdatecomment" onClick="javascript:updatecomment('${row.commentID}');"
+											class="btn btn-primary btn-arraw-right">댓글 수정</a>
+										<a type="button" id="btnDeletecomment" onClick="javascript:deletecomment('${row.commentID}');"
+											class="btn btn-primary btn-arraw-right">댓글 삭제</a>
+									</c:if>
+								</div>
+							</td>
+						</tr>
 					</c:forEach>
 				</table>
 				<c:if test="${userID ne null}">
 					<input type="text" class="form-control" value=""
-							placeholder="댓글 입력" id="commentContent" maxlength="50">
+						placeholder="댓글 입력" id="commentContent" name="commentContent" maxlength="50">
 					<input type="button" id="btnEnrollcomment"
-							class="btn btn-primary pull-right" value="댓글 등록">
-				</c:if>															
-			</form>									
+						class="btn btn-primary pull-right" value="댓글 등록">
+				</c:if>
+			
 		</div>
 	</div>
-	
+
 	<script src="${path}/resources/js/bootstrap.min.js"></script>
 </body>
 </html>

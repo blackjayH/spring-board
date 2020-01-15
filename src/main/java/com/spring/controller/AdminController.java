@@ -15,7 +15,6 @@ public class AdminController {
 	@Autowired
 	UserService userservice;
 
-	// 
 	@RequestMapping("/board/view/admin")
 	public String viewAdmin(Model model) {
 		List<UserVO> list = userservice.listAll();	

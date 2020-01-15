@@ -3,16 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.website.boardMapper">
-	<!-- 00. 전체 게시글 조회(미사용) -->
-	<select id="listAll" parameterType="int"
-		resultType="com.spring.vo.BoardVO">
-		SELECT bbsID, bbsTitle, userID,
-		bbsDate, bbsContent,
-		bbsAvailable, click FROM BBS WHERE bbsAvailable = 1
-		ORDER BY bbsID DESC
-		LIMIT 0,10
-	</select>
-
 	<!-- 01. 페이지별 게시글 조회(메인) -->
 	<select id="listPage" parameterType="com.spring.vo.Paging"
 		resultType="com.spring.vo.BoardVO">
@@ -83,4 +73,15 @@
 		click+1
 		where bbsID= #{bbsID}
 	</update>
+	
+	
+	<!-- 00. 전체 게시글 조회(미사용) -->
+	<select id="listAll" parameterType="int"
+		resultType="com.spring.vo.BoardVO">
+		SELECT bbsID, bbsTitle, userID,
+		bbsDate, bbsContent,
+		bbsAvailable, click FROM BBS WHERE bbsAvailable = 1
+		ORDER BY bbsID DESC
+		LIMIT 0,10
+	</select>
 </mapper>
